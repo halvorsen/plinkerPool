@@ -15,6 +15,11 @@
 		069211951EFF499B000953BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 069211931EFF499B000953BA /* Main.storyboard */; };
 		069211971EFF499B000953BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 069211961EFF499B000953BA /* Assets.xcassets */; };
 		0692119A1EFF499B000953BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 069211981EFF499B000953BA /* LaunchScreen.storyboard */; };
+		069211A21F015D00000953BA /* MenuButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A11F015D00000953BA /* MenuButtons.swift */; };
+		069211A41F016191000953BA /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A31F016191000953BA /* GameOverView.swift */; };
+		069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A51F01727C000953BA /* UIProtocolExtentions.swift */; };
+		069211A81F017933000953BA /* GameIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A71F017933000953BA /* GameIntroView.swift */; };
+		2104A0B7D67CB4D3EFFE9173 /* Pods_plinker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE2256B852D377CE6408BF74 /* Pods_plinker.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +33,13 @@
 		069211961EFF499B000953BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		069211991EFF499B000953BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0692119B1EFF499C000953BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		069211A11F015D00000953BA /* MenuButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtons.swift; sourceTree = "<group>"; };
+		069211A31F016191000953BA /* GameOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		069211A51F01727C000953BA /* UIProtocolExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIProtocolExtentions.swift; sourceTree = "<group>"; };
+		069211A71F017933000953BA /* GameIntroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameIntroView.swift; path = ../GameIntroView.swift; sourceTree = "<group>"; };
+		3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.debug.xcconfig"; sourceTree = "<group>"; };
+		87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.release.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.release.xcconfig"; sourceTree = "<group>"; };
+		CE2256B852D377CE6408BF74 /* Pods_plinker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_plinker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2104A0B7D67CB4D3EFFE9173 /* Pods_plinker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +59,8 @@
 			children = (
 				069211881EFF499B000953BA /* plinker */,
 				069211871EFF499B000953BA /* Products */,
+				146EF33D5FBDD09C6C600123 /* Pods */,
+				16131D322484FE0CD8D5416E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +76,10 @@
 			isa = PBXGroup;
 			children = (
 				069211891EFF499B000953BA /* AppDelegate.swift */,
+				069211A11F015D00000953BA /* MenuButtons.swift */,
+				069211A71F017933000953BA /* GameIntroView.swift */,
+				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
+				069211A31F016191000953BA /* GameOverView.swift */,
 				0692118B1EFF499B000953BA /* GameScene.sks */,
 				0692118D1EFF499B000953BA /* Actions.sks */,
 				0692118F1EFF499B000953BA /* GameScene.swift */,
@@ -73,6 +92,23 @@
 			path = plinker;
 			sourceTree = "<group>";
 		};
+		146EF33D5FBDD09C6C600123 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */,
+				87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		16131D322484FE0CD8D5416E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE2256B852D377CE6408BF74 /* Pods_plinker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,9 +116,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0692119E1EFF499C000953BA /* Build configuration list for PBXNativeTarget "plinker" */;
 			buildPhases = (
+				F77A5312AAFD52F6C937A466 /* [CP] Check Pods Manifest.lock */,
 				069211821EFF499B000953BA /* Sources */,
 				069211831EFF499B000953BA /* Frameworks */,
 				069211841EFF499B000953BA /* Resources */,
+				30B5725209272E26FE83D4DE /* [CP] Embed Pods Frameworks */,
+				008FF4FB549037905BE9B0F6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -143,13 +182,65 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		008FF4FB549037905BE9B0F6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-plinker/Pods-plinker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		30B5725209272E26FE83D4DE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-plinker/Pods-plinker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F77A5312AAFD52F6C937A466 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		069211821EFF499B000953BA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				069211A41F016191000953BA /* GameOverView.swift in Sources */,
 				069211901EFF499B000953BA /* GameScene.swift in Sources */,
 				069211921EFF499B000953BA /* GameViewController.swift in Sources */,
+				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
+				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
+				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +362,7 @@
 		};
 		0692119F1EFF499C000953BA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;
@@ -284,6 +376,7 @@
 		};
 		069211A01EFF499C000953BA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;

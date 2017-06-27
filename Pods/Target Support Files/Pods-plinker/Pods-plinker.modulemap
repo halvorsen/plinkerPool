@@ -1,0 +1,6 @@
+framework module Pods_plinker {
+  umbrella header "Pods-plinker-umbrella.h"
+
+  export *
+  module * { export * }
+}
