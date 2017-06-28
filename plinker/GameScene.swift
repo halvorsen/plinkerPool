@@ -9,7 +9,14 @@
 import SpriteKit
 import GameplayKit
 
+protocol refreshDelegate: class {
+    func refresh(start: CGPoint, end: CGPoint)
+    func turn(on: Bool)
+}
+
 class GameScene: SKScene, BrothersUIAutoLayout {
+    var viewController: GameViewController!
+    var delegateRefresh: refreshDelegate?
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
@@ -20,47 +27,58 @@ class GameScene: SKScene, BrothersUIAutoLayout {
     private let cueColor: UIColor = UIColor(colorLiteralRed: 7/255, green: 7/255, blue: 7/255, alpha: 1.0)
     private let boundaryColor: UIColor = UIColor(colorLiteralRed: 7/255, green: 7/255, blue: 7/255, alpha: 0.6)
     var cue = SKShapeNode()
-    private let ballRadius:CGFloat = 23
+    var cueLocation = CGPoint()
+    private let ballRadius:CGFloat = 12
+    var balls = [SKShapeNode]()
+    let initialDamping: CGFloat = 0.1
+    var startTouchLocation = CGPoint(x: 0, y: 0)
+    var endTouchLocation = CGPoint(x: 0, y: 0)
+    
     
     override func didMove(to view: SKView) {
+        
+        self.backgroundColor = SKColor.white
+        
         let boundaryDictionary : [(CGFloat,CGFloat,CGFloat,CGFloat)] = [
-        (-375,-667,12,1334),
-        (363,-667,12,1334),
-        (-375,-667,750,12),
-        (-375,655,750,12),
-        
-        
-        
-        ]
+            (0,0,6,667),
+            (369,0,6,667),
+            (0,0,375,6),
+            (0,661,375,6),
+            ]
         for (x,y,width,height) in boundaryDictionary {
-        let boundary = SKShapeNode(rect: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
-        boundary.strokeColor = boundaryColor
-        boundary.fillColor = boundaryColor
-        boundary.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: boundary.frame.minX, y: boundary.frame.minY), to: CGPoint(x: boundary.frame.maxX, y: boundary.frame.maxY))
-        boundary.physicsBody?.isDynamic = false
-        self.addChild(boundary)
+            let boundary = SKShapeNode(rect: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
+            boundary.strokeColor = boundaryColor
+            boundary.fillColor = boundaryColor
+            boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
+            boundary.physicsBody?.isDynamic = false
+            self.addChild(boundary)
         }
         
         cue = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
-        cue.position = CGPoint(x: 0, y: -300*sh)  // Center (given scene anchor point is 0.5 for x&y)
+        cue.position = CGPoint(x: 375*sw/2, y: 200*sh)  // Center (given scene anchor point is 0.5 for x&y)
         //circle.glowWidth = 1.0
         cue.strokeColor = cueColor
         cue.fillColor = cueColor
         cue.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
         cue.physicsBody?.affectedByGravity = false
+        cue.physicsBody?.mass = 10
+        cue.physicsBody?.linearDamping = initialDamping
         self.addChild(cue)
         
         for i in 0...8 {
-        let colors = [color1, color2, color3, color4]
-        let circle = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
-        circle.position = CGPoint(x: sw*(CGFloat(i%2)*50 - 25), y: sh*50*CGFloat(i))  // Center (given scene anchor point is 0.5 for x&y)
-        //circle.glowWidth = 1.0
-        let select = colors[Int(arc4random_uniform(4))]
-        circle.strokeColor = select
-        circle.fillColor = select
-        circle.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
-        circle.physicsBody?.affectedByGravity = false
-        self.addChild(circle)
+            let colors = [color1, color2, color3, color4]
+            let circle = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
+            circle.position = CGPoint(x: 400*sw/2 - CGFloat(i%2)*25*sw, y: 667/2 + CGFloat(i)*30)//CGPoint(x: sw*(CGFloat(i%2)*5 - 2.5), y: sh*5*CGFloat(i))  // Center (given scene anchor point is 0.5 for x&y)
+            //circle.glowWidth = 1.0
+            let select = colors[Int(arc4random_uniform(4))]
+            circle.strokeColor = select
+            circle.fillColor = select
+            circle.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
+            circle.physicsBody?.affectedByGravity = false
+            circle.physicsBody?.mass = 1
+            circle.physicsBody?.linearDamping = initialDamping
+            self.addChild(circle)
+            balls.append(circle)
         }
         
         // Get label node from scene and store it for use later
@@ -86,21 +104,53 @@ class GameScene: SKScene, BrothersUIAutoLayout {
     
     
     func touchDown(atPoint pos : CGPoint) {
-        cue.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 500))
+        startTouchLocation = pos
+        delegateRefresh?.turn(on: true)
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        
+        endTouchLocation = pos
+        print("touchmoved")
+        delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
     }
     
     func touchUp(atPoint pos : CGPoint) {
+        endTouchLocation = pos
+        let dx = startTouchLocation.x - endTouchLocation.x
+        let dy = startTouchLocation.y - endTouchLocation.y
+        let amplitude = CGFloat(sqrt(Double(dx*dx + dy*dy)))
+        cue.physicsBody?.applyImpulse(CGVector(dx: -10000*dx/amplitude, dy: -10000*dy/amplitude))
+        delay(bySeconds: 1.5) {
+            
+            for ball in self.balls {
+                ball.physicsBody?.linearDamping = 3
+            }
+            self.cue.physicsBody?.linearDamping = 3
+            
+            self.delay(bySeconds: 1.0) {
+                for ball in self.balls {
+                    ball.physicsBody?.linearDamping = 10
+                }
+                self.cue.physicsBody?.linearDamping = 10
+                self.delay(bySeconds: 0.5) {
+                    for ball in self.balls {
+                        ball.physicsBody?.linearDamping = self.initialDamping
+                    }
+                    self.cue.physicsBody?.linearDamping = self.initialDamping
+                }
+            }
+        }
+        delegateRefresh?.turn(on: false)
+    }
+    
+    func drawLine() {
         
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
+        //        if let label = self.label {
+        //            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+        //        }
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -122,3 +172,25 @@ class GameScene: SKScene, BrothersUIAutoLayout {
         // Called before each frame is rendered
     }
 }
+
+extension SKScene {
+    func delay(bySeconds seconds: Double, dispatchLevel: DispatchLevel = .main, closure: @escaping () -> Void) {
+        let dispatchTime = DispatchTime.now() + seconds
+        dispatchLevel.dispatchQueue.asyncAfter(deadline: dispatchTime, execute: closure)
+    }
+    
+    enum DispatchLevel {
+        case main, userInteractive, userInitiated, utility, background
+        var dispatchQueue: DispatchQueue {
+            switch self {
+            case .main:                 return DispatchQueue.main
+            case .userInteractive:      return DispatchQueue.global(qos: .userInteractive)
+            case .userInitiated:        return DispatchQueue.global(qos: .userInitiated)
+            case .utility:              return DispatchQueue.global(qos: .utility)
+            case .background:           return DispatchQueue.global(qos: .background)
+            }
+        }
+    }
+}
+
+

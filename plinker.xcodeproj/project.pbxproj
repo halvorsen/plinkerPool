@@ -19,6 +19,7 @@
 		069211A41F016191000953BA /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A31F016191000953BA /* GameOverView.swift */; };
 		069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A51F01727C000953BA /* UIProtocolExtentions.swift */; };
 		069211A81F017933000953BA /* GameIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A71F017933000953BA /* GameIntroView.swift */; };
+		06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962E311F041841004D290B /* ProjectileDrawings.swift */; };
 		2104A0B7D67CB4D3EFFE9173 /* Pods_plinker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE2256B852D377CE6408BF74 /* Pods_plinker.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		069211A31F016191000953BA /* GameOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		069211A51F01727C000953BA /* UIProtocolExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIProtocolExtentions.swift; sourceTree = "<group>"; };
 		069211A71F017933000953BA /* GameIntroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameIntroView.swift; path = ../GameIntroView.swift; sourceTree = "<group>"; };
+		06962E311F041841004D290B /* ProjectileDrawings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectileDrawings.swift; sourceTree = "<group>"; };
 		3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.debug.xcconfig"; sourceTree = "<group>"; };
 		87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.release.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.release.xcconfig"; sourceTree = "<group>"; };
 		CE2256B852D377CE6408BF74 /* Pods_plinker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_plinker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 				0692118B1EFF499B000953BA /* GameScene.sks */,
 				0692118D1EFF499B000953BA /* Actions.sks */,
 				0692118F1EFF499B000953BA /* GameScene.swift */,
+				06962E311F041841004D290B /* ProjectileDrawings.swift */,
 				069211911EFF499B000953BA /* GameViewController.swift */,
 				069211931EFF499B000953BA /* Main.storyboard */,
 				069211961EFF499B000953BA /* Assets.xcassets */,
@@ -238,6 +241,7 @@
 				069211A41F016191000953BA /* GameOverView.swift in Sources */,
 				069211901EFF499B000953BA /* GameScene.swift in Sources */,
 				069211921EFF499B000953BA /* GameViewController.swift in Sources */,
+				06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
 				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
@@ -407,6 +411,7 @@
 				069211A01EFF499C000953BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
