@@ -30,6 +30,7 @@ class GameScene: SKScene, BrothersUIAutoLayout {
     var cueLocation = CGPoint()
     private let ballRadius:CGFloat = 12
     var balls = [SKShapeNode]()
+    var boundaries = [SKShapeNode]()
     let initialDamping: CGFloat = 0.1
     var startTouchLocation = CGPoint(x: 0, y: 0)
     var endTouchLocation = CGPoint(x: 0, y: 0)
@@ -51,35 +52,29 @@ class GameScene: SKScene, BrothersUIAutoLayout {
             boundary.fillColor = boundaryColor
             boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
             boundary.physicsBody?.isDynamic = false
+            boundary.alpha = 0.0
             self.addChild(boundary)
+            boundaries.append(boundary)
         }
         
-        cue = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
-        cue.position = CGPoint(x: 375*sw/2, y: 200*sh)  // Center (given scene anchor point is 0.5 for x&y)
-        //circle.glowWidth = 1.0
-        cue.strokeColor = cueColor
-        cue.fillColor = cueColor
-        cue.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
-        cue.physicsBody?.affectedByGravity = false
-        cue.physicsBody?.mass = 10
-        cue.physicsBody?.linearDamping = initialDamping
-        self.addChild(cue)
         
-        for i in 0...8 {
-            let colors = [color1, color2, color3, color4]
-            let circle = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
-            circle.position = CGPoint(x: 400*sw/2 - CGFloat(i%2)*25*sw, y: 667/2 + CGFloat(i)*30)//CGPoint(x: sw*(CGFloat(i%2)*5 - 2.5), y: sh*5*CGFloat(i))  // Center (given scene anchor point is 0.5 for x&y)
-            //circle.glowWidth = 1.0
-            let select = colors[Int(arc4random_uniform(4))]
-            circle.strokeColor = select
-            circle.fillColor = select
-            circle.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
-            circle.physicsBody?.affectedByGravity = false
-            circle.physicsBody?.mass = 1
-            circle.physicsBody?.linearDamping = initialDamping
-            self.addChild(circle)
-            balls.append(circle)
+        
+        addBalls()
+        
+        delay(bySeconds: 1.0) {
+            for ball in self.balls {
+                ball.physicsBody?.linearDamping = 100000
+            }
+            self.cue.physicsBody?.linearDamping = 100000
+            self.delay(bySeconds: 0.5) {
+                for ball in self.balls {
+                    ball.physicsBody?.linearDamping = self.initialDamping
+                }
+                self.cue.physicsBody?.linearDamping = self.initialDamping
+            }
         }
+        
+        
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
@@ -100,6 +95,50 @@ class GameScene: SKScene, BrothersUIAutoLayout {
                                               SKAction.fadeOut(withDuration: 0.5),
                                               SKAction.removeFromParent()]))
         }
+        
+        
+    }
+    
+    func addBalls() {
+        
+        for i in 0...8 {
+            delay(bySeconds: 0.1*Double(i)) {
+                let colors = [self.color1, self.color2, self.color3, self.color4]
+                let circle = SKShapeNode(circleOfRadius: self.ballRadius*self.sw ) // Create circle
+                circle.position = CGPoint(x: 375*self.sw/2, y: 667*self.sh/2)//CGPoint(x: sw*(CGFloat(i%2)*5 - 2.5), y: sh*5*CGFloat(i))  // Center (given scene anchor point is 0.5 for x&y)
+                //circle.glowWidth = 1.0
+                let select = colors[Int(arc4random_uniform(4))]
+                circle.strokeColor = select
+                circle.fillColor = select
+                circle.physicsBody = SKPhysicsBody(circleOfRadius: self.ballRadius*self.sw)
+                circle.physicsBody?.affectedByGravity = false
+                circle.physicsBody?.mass = 1
+                circle.physicsBody?.restitution = 0.9
+                circle.physicsBody?.linearDamping = self.initialDamping
+                self.addChild(circle)
+                self.balls.append(circle)
+                circle.alpha = 0.0
+                let dx = Int(arc4random_uniform(10000)) + 10000
+                let dy = Int(arc4random_uniform(10000)) + 10000
+                circle.physicsBody?.applyImpulse(CGVector(dx: dx, dy: dy))
+                
+            }
+        }
+        delay(bySeconds: 2.0) {
+            self.cue = SKShapeNode(circleOfRadius: self.ballRadius*self.sw ) // Create circle
+            self.cue.position = CGPoint(x: 375*self.sw/2, y: 667*self.sh/2)  // Center (given scene anchor point is 0.5 for x&y)
+            //circle.glowWidth = 1.0
+            self.cue.strokeColor = self.cueColor
+            self.cue.fillColor = self.cueColor
+            self.cue.physicsBody = SKPhysicsBody(circleOfRadius: self.ballRadius*self.sw)
+            self.cue.physicsBody?.affectedByGravity = false
+            self.cue.physicsBody?.mass = 10
+            self.cue.physicsBody?.restitution = 0.9
+            self.cue.physicsBody?.linearDamping = self.initialDamping
+            self.cue.alpha = 0.0
+            self.addChild(self.cue)
+        }
+        
     }
     
     
