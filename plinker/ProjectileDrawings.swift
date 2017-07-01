@@ -40,15 +40,16 @@ class ProjectileDrawings: UIView, BrothersUIAutoLayout {
        // aPath.close()
         
         //If you want to stroke it with a red color
-        UIColor.red.set()
+        UIColor(colorLiteralRed: 7/255, green: 7/255, blue: 7/255, alpha: 1.0).set()
         aPath.stroke()
         //If you want to fill it as well
     //    aPath.fill()
         
         
-        circlePath = UIBezierPath(arcCenter: endLine, radius: 23*UIScreen.main.bounds.width/750, startAngle: CGFloat(0), endAngle:CGFloat(M_PI * 2), clockwise: true)
+        circlePath = UIBezierPath(arcCenter: endLine, radius: 25*UIScreen.main.bounds.width/750, startAngle: CGFloat(0), endAngle:.pi*2, clockwise: true)
+        UIColor(colorLiteralRed: 162/255, green: 162/255, blue: 162/255, alpha: 1.0).set()
+      //  circlePath.stroke()
         
-        circlePath.stroke()
         circlePath.fill()
     }
     
