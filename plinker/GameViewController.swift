@@ -15,31 +15,36 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     let cover = UIView()
     var cueTrajectory = ProjectileDrawings()
     var scene = GameScene()
+    let view3 = SKView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
-        if let view = self.view as! SKView? {
-            
-            scene = GameScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
-            scene.scaleMode = .aspectFill
-            scene.delegateRefresh = self
-            view.presentScene(scene)
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+        view.backgroundColor = UIColor(displayP3Red: 7/255, green: 7/255, blue: 7/255, alpha: 0.6)
+        let view2 = UIView(frame: CGRect(x: 6*sw, y: 6*sh, width: 363*sw, height: 655*sh))
+        view2.backgroundColor = .white
+        view.addSubview(view2)
+        view3.frame = view2.bounds
+        view2.addSubview(view3)
+        
+        scene = GameScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
+        scene.scaleMode = .aspectFill
+        scene.delegateRefresh = self
+        view3.presentScene(scene)
+        
+        view3.ignoresSiblingOrder = true
+        
+        view3.showsFPS = true
+        view3.showsNodeCount = true
         
         if !cueTrajectory.isDescendant(of: view) {
             view.addSubview(cueTrajectory)
         }
         
-        
-        
     }
+    
+    
     
     override func viewDidAppear(_ animated: Bool) {
         cover.frame = view.bounds
@@ -61,24 +66,24 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         
         self.delay(bySeconds: 1.2) {
             countDownLabel.text = ""
-            self.delay(bySeconds: 1.2) {
-                countDownLabel.text = ""
-                self.delay(bySeconds: 1.5) {
-                    countDownLabel.text = "Plinker Pool!"
+            
+            self.delay(bySeconds: 1.5) {
+                countDownLabel.text = "Plinker Pool!"
+                UIView.animate(withDuration: 0.5) {
+                    countDownLabel.alpha = 1.0
+                }
+                self.delay(bySeconds: 0.7) {
                     UIView.animate(withDuration: 0.5) {
-                        countDownLabel.alpha = 1.0
+                        countDownLabel.alpha = 0.0
+                        
                     }
-                    self.delay(bySeconds: 1.5) {
-                        UIView.animate(withDuration: 0.5) {
-                            countDownLabel.alpha = 0.0
-                            
-                        }
-                        self.delay(bySeconds: 0.8) {
-                            countDownLabel.removeFromSuperview()
-                        }
+                    self.delay(bySeconds: 0.8) {
+                        countDownLabel.removeFromSuperview()
+                        
                     }
                 }
             }
+            
         }
         
         delay(bySeconds: 1.0) {
@@ -92,7 +97,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
             // }
         }
-        delay(bySeconds: 5.5) {
+        delay(bySeconds: 3.5) {
             
             for ball in self.scene.balls {
                 
@@ -107,16 +112,19 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             
             self.scene.cue.alpha = 1.0
             
-            UIView.animate(withDuration: 2.5) {
+            UIView.animate(withDuration: 1.2) {
                 self.cover.alpha = 0.0
             }
             self.delay(bySeconds: 3.0) {
                 self.cover.removeFromSuperview()
+                self.scene.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: self.scene.frame.width, height: self.scene.frame.height))
+         
             }
             
             
         }
     }
+    
     func turn(on: Bool) {
         if on {
             cueTrajectory.alpha = 1.0
@@ -125,7 +133,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         }
     }
     func refresh(start: CGPoint, end: CGPoint) {
- 
+        
         let x = scene.cue.position.x
         let y = 667 - scene.cue.position.y
         cueTrajectory.startLine = CGPoint(x: x, y: y)//scene.cue.position
@@ -133,106 +141,6 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         cueTrajectory.setNeedsDisplay()
         
     }
-    
-    //    (94,0,60,6),
-    //    (369,251,6,60),
-    //    (369,503,6,60),
-    //    (221,661,60,6),
-    //    (0,366,6,60),
-    //    (0,114,6,60),
-    
-    func controlGate(gate: Gate) {
-        switch gate.position {
-        case .top:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[0], location: CGPoint(x: 94*sw, y: 0))
-                scene.lockSprite(sprite: scene.boundaries[0], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[0], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[0], location: CGPoint(x: 94*sw, y: -7*sh))
-                scene.lockSprite(sprite: scene.boundaries[0], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[0], colorString: gate.myColor.rawValue)
-                
-            }
-            
-        case .rightTop:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 376*sw, y: 251*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 376*sw, y: 251*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            }
-            
-        case .rightBottom:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 376*sw, y: 503*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 376*sw, y: 503*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            }
-            
-        case .bottom:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 0, y: 366*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: -7*sw, y: 366*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            }
-            
-        case .leftBottom:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 0, y: 114*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: -7*sw, y: 114*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-                
-            }
-            
-        case .leftTop:
-            switch gate.myState {
-            case .closed:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 0, y: 114*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: false)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            case .open:
-                scene.moveSprite(sprite: scene.boundaries[1], location: CGPoint(x: 221*sw, y: 114*sh))
-                scene.lockSprite(sprite: scene.boundaries[1], isDynamic: true)
-                scene.colorSprite(sprite: scene.boundaries[1], colorString: gate.myColor.rawValue)
-                
-            }
-            
-            
-        }
-    }
-    
-    
     
     override var prefersStatusBarHidden: Bool {
         return true

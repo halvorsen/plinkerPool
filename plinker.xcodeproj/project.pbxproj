@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		064193631F06BA8C00B7B3FE /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193621F06BA8C00B7B3FE /* Animation.swift */; };
-		064193651F07E88300B7B3FE /* Gate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193641F07E88300B7B3FE /* Gate.swift */; };
 		0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211891EFF499B000953BA /* AppDelegate.swift */; };
 		0692118C1EFF499B000953BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118B1EFF499B000953BA /* GameScene.sks */; };
 		0692118E1EFF499B000953BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118D1EFF499B000953BA /* Actions.sks */; };
@@ -27,7 +26,6 @@
 
 /* Begin PBXFileReference section */
 		064193621F06BA8C00B7B3FE /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
-		064193641F07E88300B7B3FE /* Gate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gate.swift; sourceTree = "<group>"; };
 		069211861EFF499B000953BA /* plinker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = plinker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		069211891EFF499B000953BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0692118B1EFF499B000953BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 				069211A11F015D00000953BA /* MenuButtons.swift */,
 				069211A71F017933000953BA /* GameIntroView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
-				064193641F07E88300B7B3FE /* Gate.swift */,
 				069211A31F016191000953BA /* GameOverView.swift */,
 				0692118B1EFF499B000953BA /* GameScene.sks */,
 				0692118D1EFF499B000953BA /* Actions.sks */,
@@ -250,7 +247,6 @@
 				06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
 				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
-				064193651F07E88300B7B3FE /* Gate.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
 				0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */,

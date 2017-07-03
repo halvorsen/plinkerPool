@@ -34,6 +34,9 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     let initialDamping: CGFloat = 0.1
     var startTouchLocation = CGPoint(x: 0, y: 0)
     var endTouchLocation = CGPoint(x: 0, y: 0)
+    var boundary = SKShapeNode()
+    
+  
     
     enum CollisionTypes: UInt32 {
         
@@ -54,6 +57,13 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.white
         
+        
+            
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 30*sw, y: 30*sh, width: 315*sw, height: 607*sh))
+        
+       
+        
+        
         //        CGPoint(x: 118*sw, y: 0),
         //        CGPoint(x: 375*sw, y: 270*sh),
         //        CGPoint(x: 375*sw, y: 523*sh),
@@ -61,46 +71,62 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         //        CGPoint(x: 0, y: 396*sh),
         //        CGPoint(x: 0, y: 144*sh)
         
-        let boundaryDictionary : [(CGFloat,CGFloat,CGFloat,CGFloat)] = [
-            (94,0,60,6),
-            (369,251,6,60),
-            (369,503,6,60),
-            (221,661,60,6),
-            (0,366,6,60),
-            (0,114,6,60),
-            (0,0,6,114),
-            (0,174,6,192),
-            (0,426,6,251),
-            (369,563,6,114),
-            (369,311,6,192),
-            (369,0,6,251),
-            (6,0,88,6),
-            (154,0,215,6),
-            (6,661,215,6),
-            (281,661,88,6)
-        ]
-        var j = 0
-        for (x,y,width,height) in boundaryDictionary {
-            let boundary = SKShapeNode(rect: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
-            boundary.strokeColor = boundaryColor
-            boundary.fillColor = boundaryColor
-            boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
-            boundary.physicsBody?.isDynamic = true
-            boundary.physicsBody?.allowsRotation = false
-
-            if j < 7 {
-                boundary.physicsBody?.categoryBitMask = CollisionTypes.boundary.rawValue
-                for i in 1...9 {
-                boundary.physicsBody?.contactTestBitMask = UInt32(i)
-                }
-            }
-            j += 1
-            boundary.alpha = 0.0
-            self.addChild(boundary)
-            boundaries.append(boundary)
-        }
+//        let boundaryDictionary : [(CGFloat,CGFloat,CGFloat,CGFloat)] = [
+//            (94,0,60,6),
+//            (369,251,6,60),
+//            (369,503,6,60),
+//            (221,661,60,6),
+//            (0,366,6,60),
+//            (0,114,6,60),
+//            (0,0,6,114),
+//            (0,174,6,192),
+//            (0,426,6,251),
+//            (369,563,6,114),
+//            (369,311,6,192),
+//            (369,0,6,251),
+//            (6,0,88,6),
+//            (154,0,215,6),
+//            (6,661,215,6),
+//            (281,661,88,6)
+      
+//        ]
+//        var j = 0
+//        for (x,y,width,height) in boundaryDictionary {
+//            let boundary = SKShapeNode(rect: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
+//            boundary.strokeColor = boundaryColor
+//            boundary.fillColor = boundaryColor
+//            
+//            
+//            
+//            
+//            boundary.physicsBody?.allowsRotation = false
+//
+//            if j < 7 {
+//                
+//                boundary.physicsBody?.affectedByGravity = false
+//               // boundary.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width*sw, height: height*sh))
+//                boundary.physicsBody?.categoryBitMask = CollisionTypes.boundary.rawValue
+//              //  boundary.physicsBody?.mass = 0.1
+//                for i in 1...9 {
+//                boundary.physicsBody?.contactTestBitMask = UInt32(i)
+//                }
+//            } else {
+//               // boundary.physicsBody?.isDynamic = true
+//                boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: x*sw, y: y*sh, width: width*sw, height: height*sh))
+//            }
+//            j += 1
+//            boundary.alpha = 0.0
+//            self.addChild(boundary)
+//            boundaries.append(boundary)
+//        }
         
-        
+        boundary = SKShapeNode(rect: CGRect(x: 157.5*sw, y: 0, width: 60*sw, height: 6*sh))
+        boundary.strokeColor = color1
+        boundary.fillColor = color1
+        boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 157.5*sw, y: 0, width: 60*sw, height: 6*sh))
+        self.addChild(boundary)
+        for i in 1...9 {boundary.physicsBody?.contactTestBitMask = UInt32(i)}
+        boundary.physicsBody?.categoryBitMask = CollisionTypes.boundary.rawValue
         
         addBalls()
         
@@ -142,11 +168,56 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         
     }
     
+    let locationAndShapes: [(CGFloat,CGFloat,CGFloat,CGFloat)] = [
+        
+        (0,0,60,6),
+        (0,0,6,60),
+        (595,0,60,6),
+        (595,649,60,6),
+        (0,649,60,6),
+        (357,0,6,60),
+        (357,595,6,60),
+        
+        ]
+    
+//    func changeGateLocation() {
+//        let random = Int(arc4random_uniform(7))
+//        let newRect = CGRect(x: location[random].0*sw, y: location[random].1*sh, width: location[random].2*sw, height: location[random].3*sh)
+//        print("newrect: \(newRect)")
+//        boundary.removeFromParent()
+//        let _boundary = SKShapeNode(rect: newRect)
+//        _boundary.strokeColor = color1
+//        _boundary.fillColor = color1
+//        _boundary.physicsBody = SKPhysicsBody(edgeLoopFrom: newRect)
+//        self.addChild(_boundary)
+//        for i in 1...9 {_boundary.physicsBody?.contactTestBitMask = UInt32(i)}
+//        _boundary.physicsBody?.categoryBitMask = CollisionTypes.boundary.rawValue
+//       // boundary = SKShapeNode(rect: newRect)
+//        
+//        
+//        boundary = _boundary
+//        
+//        
+////        let boundarys = SKShapeNode(rect: CGRect(x: 157.5*sw, y: 0, width: 60*sw, height: 6*sh))
+////        boundarys.strokeColor = color4
+////        boundarys.fillColor = color4
+////        boundarys.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 157.5*sw, y: 0, width: 60*sw, height: 6*sh))
+////        self.addChild(boundarys)
+////        for i in 1...9 {boundarys.physicsBody?.contactTestBitMask = UInt32(i)}
+////        boundarys.physicsBody?.categoryBitMask = CollisionTypes.boundary.rawValue
+//
+//        
+//    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
         print("CONTACT")
         print(contact)
         print("bodyA: \(contact.bodyA.categoryBitMask)")
         print("bodyB: \(contact.bodyB.categoryBitMask)")
+        
+        if contact.bodyA.categoryBitMask == 11 && contact.bodyB.categoryBitMask < 10 {
+            print("!!!!!!!!!!!")
+        }
     }
     
     func moveSprite(sprite: SKShapeNode, location: CGPoint) {
@@ -194,10 +265,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             circle.physicsBody?.contactTestBitMask = CollisionTypes.boundary.rawValue
             self.addChild(circle)
             self.balls.append(circle)
-            circle.alpha = 0.0
-            
-            
-            
+            circle.alpha = 0.0   
         }
         
         cue = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
@@ -225,7 +293,9 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     
     
     func touchDown(atPoint pos : CGPoint) {
-        startTouchLocation = pos
+        endTouchLocation = CGPoint(x: cue.frame.midX, y: cue.frame.midY)
+        startTouchLocation = CGPoint(x: cue.frame.midX, y: cue.frame.midY)
+        delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
         delegateRefresh?.turn(on: true)
     }
     
@@ -262,6 +332,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             }
         }
         delegateRefresh?.turn(on: false)
+        
     }
     
     func drawLine() {

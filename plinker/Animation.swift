@@ -92,7 +92,7 @@ class Animation: UIView, BrothersUIAutoLayout {
             i += 1
         }
         i = 0
-        delay(bySeconds: 1.0) {
+        delay(bySeconds: 0.5) {
             for location in smallLocations {
                 UIView.animate(withDuration: 1.0) {
                     balls[i].frame.origin.x = location.x - ballRadius*self.sw
@@ -102,7 +102,7 @@ class Animation: UIView, BrothersUIAutoLayout {
                 i += 1
             }
 
-            self.delay(bySeconds: 1.0) {
+            self.delay(bySeconds: 0.5) {
                 i = 0
                 for location in largeLocations {
                     UIView.animate(withDuration: 1.0) {
@@ -111,7 +111,7 @@ class Animation: UIView, BrothersUIAutoLayout {
                     }
                     i += 1
                 }
-                self.delay(bySeconds: 1.0) {
+                self.delay(bySeconds: 0.5) {
                     i = 0
                     for location in largeLocations {
                         UIView.animate(withDuration: 1.0) {
@@ -122,7 +122,7 @@ class Animation: UIView, BrothersUIAutoLayout {
                     }
                     self.delay(bySeconds: 1.0) {
                         
-                        UIView.animate(withDuration: 1.0){
+                        UIView.animate(withDuration: 0.5){
                             self.alpha = 0
 
                         }
