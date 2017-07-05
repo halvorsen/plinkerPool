@@ -16,15 +16,15 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     var cueTrajectory = ProjectileDrawings()
     var scene = GameScene()
     let view3 = SKView()
-    var score = 0
+    var score = UILabel()
+    var scoreInt = Int() {didSet{score.text = String(scoreInt); Global.points = scoreInt}}
+    let stopCue = UIButton()
+    let stopCueLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = CustomColor.boundaryColor
-       // let view2 = UIView(frame: CGRect(x: 6*sw, y: 6*sh, width: 363*sw, height: 655*sh))
-      //  view2.backgroundColor = .white
-      //  view.addSubview(view2)
         view3.frame = self.view.bounds
         view.addSubview(view3)
         
@@ -33,18 +33,55 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         scene.delegateRefresh = self
         view3.presentScene(scene)
         view3.ignoresSiblingOrder = true
-        view3.showsFPS = true
-        view3.showsNodeCount = true
         
         if !cueTrajectory.isDescendant(of: view) {
             view.addSubview(cueTrajectory)
         }
-    }
- 
-    override func viewDidAppear(_ animated: Bool) {
+        
+        score.frame = CGRect(x: 0, y: 15*sh, width: 375*sw, height: 86*sh)
+        score.font = UIFont(name: "HelveticaNeue-Bold", size: 72*fontSizeMultiplier)
+        score.textColor = CustomColor.color3
+        score.alpha = 0.1
+        score.textAlignment = .center
+        score.text = String(Global.points)
+        view3.addSubview(score)
+        stopCueLabel.frame = CGRect(x: 0,y: 617*sh,width: 375*sw,height: 50*sh)
+        stopCueLabel.textColor = CustomColor.boundaryColor
+        stopCueLabel.textAlignment = .center
+        stopCueLabel.alpha = 0.1
+        stopCueLabel.text = "TAP Screen to freeze cue"
+        stopCue.frame = self.view.bounds
+        stopCue.addTarget(self, action: #selector(GameViewController.stopCueFunc), for: .touchUpInside)
+        
         cover.frame = view.bounds
         cover.backgroundColor = .white
         view.addSubview(cover)
+
+    }
+    
+    @objc private func stopCueFunc() {
+        scene.cue.physicsBody?.linearDamping = 10000000
+        self.delay(bySeconds: 0.2) {
+            self.scene.cue.physicsBody?.linearDamping = self.scene.initialDamping
+        }
+    }
+    func addStopCueButton() {
+        view3.addSubview(stopCueLabel)
+        view3.addSubview(stopCue)
+        
+    }
+    
+    func removeStopCueButton() {
+        stopCueLabel.removeFromSuperview()
+        stopCue.removeFromSuperview()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        scoreInt = Global.points
+    }
+ 
+    override func viewDidAppear(_ animated: Bool) {
+        
         let myAnimation = Animation()
         view.addSubview(myAnimation)
         
@@ -63,7 +100,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             countDownLabel.text = ""
             
             self.delay(bySeconds: 1.5) {
-                countDownLabel.text = "Plinker Pool!"
+                countDownLabel.text = Global.introTitle
                 UIView.animate(withDuration: 0.5) {
                     countDownLabel.alpha = 1.0
                 }
@@ -123,23 +160,44 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     func turn(on: Bool) {
         if on {
             cueTrajectory.alpha = 1.0
+            
         } else {
             cueTrajectory.alpha = 0.0
             cueTrajectory.isHorz = false
             cueTrajectory.isVert = false
+            addStopCueButton()
         }
     }
-    func pointScored() {
-        score += 1
-    }
+    
     func refresh(start: CGPoint, end: CGPoint) {
         
         let x = scene.cue.position.x
         let y = 667*sh - scene.cue.position.y
-        cueTrajectory.startLine = CGPoint(x: x, y: y)//scene.cue.position
+        cueTrajectory.startLine = CGPoint(x: x, y: y)
         cueTrajectory.endLine = CGPoint(x: 3*(end.x - start.x) + x, y: 3*(-end.y + start.y) + y)
         cueTrajectory.setNeedsDisplay()
         
+    }
+    func addPointDecrementCount() {
+        scoreInt += 1
+        Global.targetsLeft -= 1
+        if Global.targetsLeft == 0 {
+            if Global.isOddController {
+                delay(bySeconds: 1.0) {
+            performSegue(withIdentifier: "fromOddToEven", sender: self)
+                }
+            } else {
+                delay(bySeconds: 1.0) {
+            performSegue(withIdentifier: "fromEvenToOdd", sender: self)
+                }
+            }
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        Global.isOddController = !Global.isOddController
+        Global.level += 1
+        Global.introTitle = "Level \(Global.level)"
+        Global.targetsLeft = 9
     }
     
     override var prefersStatusBarHidden: Bool {

@@ -12,7 +12,10 @@ import GameplayKit
 protocol refreshDelegate: class {
     func refresh(start: CGPoint, end: CGPoint)
     func turn(on: Bool)
-    func pointScored()
+    func addPointDecrementCount()
+    func addStopCueButton()
+    func removeStopCueButton()
+    
 }
 
 class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
@@ -42,6 +45,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     }
 
     override func didMove(to view: SKView) {
+        
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.white
         
@@ -82,9 +86,9 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             CGPoint(x: 375*sw/2,y: 77*sh),
             CGPoint(x: 375*sw/2,y: 561*sh),
             CGPoint(x: 96*sw,y: 120*sh),
-            CGPoint(x: 266*sw,y: 120*sh),
+            CGPoint(x: 266*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 322*sh),
-            CGPoint(x: 266*sw,y: 520*sh),
+            CGPoint(x: 266*sw,y: 500*sh),
             ]
         
         let targetLocationsBarDirection: [Direction] = [
@@ -252,12 +256,13 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             if let target = contact.bodyA.node as? SKShapeNode {
                 
                 target.removeFromParent()
+                delegateRefresh?.addPointDecrementCount()
             } 
             if let ball = contact.bodyB.node as? SKShapeNode {
                
-            ball.removeFromParent() //node!.removeFromParent()
+            ball.removeFromParent()
             }
-            delegateRefresh?.pointScored()
+            
             
         }
         }
@@ -309,9 +314,11 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             circle.physicsBody?.usesPreciseCollisionDetection = true
             circle.physicsBody?.collisionBitMask = 1 | 2 | 4 | 8 | 16
             circle.physicsBody?.contactTestBitMask = 2 | 8
+            circle.physicsBody?.friction = 0
             self.addChild(circle)
             self.balls.append(circle)
             circle.alpha = 0.0
+            circle.zPosition = 1000
         }
         
         cue = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
@@ -324,9 +331,10 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         cue.physicsBody?.mass = 10
         cue.physicsBody?.restitution = 0.9
         cue.physicsBody?.categoryBitMask = 16
-        
         cue.physicsBody?.linearDamping = initialDamping
+        cue.physicsBody?.friction = 0
         cue.alpha = 0.0
+        cue.zPosition = 1000
         addChild(cue)
         
         let dx = Int(arc4random_uniform(10000)) + 10000
@@ -371,6 +379,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
                         ball.physicsBody?.linearDamping = self.initialDamping
                     }
                     self.cue.physicsBody?.linearDamping = self.initialDamping
+                    self.delegateRefresh?.removeStopCueButton()
                 }
             }
         }
