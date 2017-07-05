@@ -22,9 +22,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <connections>
+                        <segue destination="dUL-9v-HfL" kind="show" identifier="fromOddToEven" id="NG6-MV-hSX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-521" y="78"/>
+        </scene>
+        <!--Game View Controller-->
+        <scene sceneID="UN2-2b-NTD">
+            <objects>
+                <viewController id="dUL-9v-HfL" customClass="GameViewController" customModule="plinker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fga-cd-eA3"/>
+                        <viewControllerLayoutGuide type="bottom" id="fzw-wM-FLX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YhO-ZR-ujd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="fromEvenToOdd" id="Kwj-EV-li4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="36M-5h-tQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="437" y="72"/>
         </scene>
     </scenes>
 </document>

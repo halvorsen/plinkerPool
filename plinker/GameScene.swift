@@ -77,24 +77,43 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             
             ]
         
+        let targetLocationsBar : [CGPoint] = [
+            CGPoint(x: 375*sw/2,y: 93*sh),
+            CGPoint(x: 375*sw/2,y: 77*sh),
+            CGPoint(x: 375*sw/2,y: 561*sh),
+            CGPoint(x: 96*sw,y: 120*sh),
+            CGPoint(x: 266*sw,y: 120*sh),
+            CGPoint(x: 266*sw,y: 322*sh),
+            CGPoint(x: 266*sw,y: 520*sh),
+            ]
+        
+        let targetLocationsBarDirection: [Direction] = [
+        .up,
+        .down,
+        .down,
+        .left,
+        .right,
+        .right,
+        .right
+        ]
+        
         let structureDictionary : [Int:([CGPoint],Int,String)] = [
             0:(targetLocationsSquare,4,"square"),
             1:(targetLocationsCross,4,"cross"),
-            
+            2:(targetLocationsBar,3,"bar"),
             
         ]
         
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         self.physicsBody?.categoryBitMask = 4
-//        self.physicsBody?.collisionBitMask = 4
-//        self.physicsBody?.contactTestBitMask = 4
-        let randomUseCenterStructure = 1//Int(arc4random_uniform(2))
+        let randomUseCenterStructure = Int(arc4random_uniform(3))
         
         switch randomUseCenterStructure {
-        case 1:
+        case 1,2:
         
-            let structureKey = 1//Int(arc4random_uniform(2))
-            let locationOfStructure = structureDictionary[structureKey]!.0[Int(arc4random_uniform(UInt32(structureDictionary[structureKey]!.0.count)))]
+            let structureKey = Int(arc4random_uniform(3))
+            let randomPlace = Int(arc4random_uniform(UInt32(structureDictionary[structureKey]!.0.count)))
+            let locationOfStructure = structureDictionary[structureKey]!.0[randomPlace]
             var myStructure: Any?
             let targetsOnStructure = structureDictionary[structureKey]!.1
             switch structureDictionary[structureKey]!.2 {
@@ -120,6 +139,16 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
                     let _ = TargetHorizontal(origin: location, scene: self)
                 }
                 self.addChild(myStructure! as! TargetCross)
+            case "bar":
+                myStructure = TargetBar(originCenter: locationOfStructure, orientation: targetLocationsBarDirection[randomPlace])
+                for (location) in [((myStructure! as! TargetBar).location1),((myStructure! as! TargetBar).location2),((myStructure! as! TargetBar).location3)] {
+                    if targetLocationsBarDirection[randomPlace] == .down || targetLocationsBarDirection[randomPlace] == .up {
+                    let _ = TargetHorizontal(origin: location, scene: self)
+                    } else {
+                    let _ = TargetVertical(origin: location, scene: self)
+                    }
+                }
+                self.addChild(myStructure! as! TargetBar)
             default:
                 break
             }
@@ -219,13 +248,13 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         print("bodyB: \(contact.bodyB.categoryBitMask)")
         if on {
         if (contact.bodyA.categoryBitMask == 2 || contact.bodyA.categoryBitMask == 8) && contact.bodyB.categoryBitMask == 1 {
-            print("!!!!!!!!!!!")
+           
             if let target = contact.bodyA.node as? SKShapeNode {
-                print("???")
+                
                 target.removeFromParent()
             } 
             if let ball = contact.bodyB.node as? SKShapeNode {
-                print("?????")
+               
             ball.removeFromParent() //node!.removeFromParent()
             }
             delegateRefresh?.pointScored()
@@ -307,8 +336,8 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     }
     
     func touchDown(atPoint pos : CGPoint) {
-        endTouchLocation = CGPoint(x: cue.frame.midX, y: cue.frame.midY)
-        startTouchLocation = CGPoint(x: cue.frame.midX, y: cue.frame.midY)
+        endTouchLocation = pos//CGPoint(x: cue.frame.midX, y: cue.frame.midY)
+        startTouchLocation = pos//CGPoint(x: cue.frame.midX, y: cue.frame.midY)
         delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
         delegateRefresh?.turn(on: true)
     }
@@ -325,14 +354,14 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         let dy = startTouchLocation.y - endTouchLocation.y
         let amplitude = CGFloat(sqrt(Double(dx*dx + dy*dy)))
         cue.physicsBody?.applyImpulse(CGVector(dx: -10000*dx/amplitude, dy: -10000*dy/amplitude))
-        delay(bySeconds: 1.5) {
+        delay(bySeconds: 3.5) {
             
             for ball in self.balls {
                 ball.physicsBody?.linearDamping = 3
             }
             self.cue.physicsBody?.linearDamping = 3
             
-            self.delay(bySeconds: 2.0) {
+            self.delay(bySeconds: 1.0) {
                 for ball in self.balls {
                     ball.physicsBody?.linearDamping = 10
                 }

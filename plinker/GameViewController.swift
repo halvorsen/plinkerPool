@@ -125,18 +125,19 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             cueTrajectory.alpha = 1.0
         } else {
             cueTrajectory.alpha = 0.0
+            cueTrajectory.isHorz = false
+            cueTrajectory.isVert = false
         }
     }
     func pointScored() {
         score += 1
     }
-    
     func refresh(start: CGPoint, end: CGPoint) {
         
         let x = scene.cue.position.x
-        let y = 667 - scene.cue.position.y
+        let y = 667*sh - scene.cue.position.y
         cueTrajectory.startLine = CGPoint(x: x, y: y)//scene.cue.position
-        cueTrajectory.endLine = CGPoint(x: 3*(end.x - start.x) + x, y: -3*(end.y - start.y) + y)
+        cueTrajectory.endLine = CGPoint(x: 3*(end.x - start.x) + x, y: 3*(-end.y + start.y) + y)
         cueTrajectory.setNeedsDisplay()
         
     }

@@ -12,6 +12,8 @@
 		0641936F1F0AA04000B7B3FE /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641936E1F0AA04000B7B3FE /* CustomColor.swift */; };
 		064193711F0AA72D00B7B3FE /* TargetSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193701F0AA72D00B7B3FE /* TargetSquare.swift */; };
 		064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193741F0C6D2E00B7B3FE /* TargetCross.swift */; };
+		064193771F0D3F3F00B7B3FE /* TargetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193761F0D3F3F00B7B3FE /* TargetBar.swift */; };
+		064193791F0D6D3A00B7B3FE /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193781F0D6D3A00B7B3FE /* Global.swift */; };
 		0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211891EFF499B000953BA /* AppDelegate.swift */; };
 		0692118C1EFF499B000953BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118B1EFF499B000953BA /* GameScene.sks */; };
 		0692118E1EFF499B000953BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118D1EFF499B000953BA /* Actions.sks */; };
@@ -34,6 +36,8 @@
 		0641936E1F0AA04000B7B3FE /* CustomColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		064193701F0AA72D00B7B3FE /* TargetSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetSquare.swift; sourceTree = "<group>"; };
 		064193741F0C6D2E00B7B3FE /* TargetCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetCross.swift; sourceTree = "<group>"; };
+		064193761F0D3F3F00B7B3FE /* TargetBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetBar.swift; sourceTree = "<group>"; };
+		064193781F0D6D3A00B7B3FE /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		069211861EFF499B000953BA /* plinker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = plinker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		069211891EFF499B000953BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0692118B1EFF499B000953BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -71,6 +75,7 @@
 			children = (
 				0641936C1F0A9F3D00B7B3FE /* Target.swift */,
 				064193741F0C6D2E00B7B3FE /* TargetCross.swift */,
+				064193761F0D3F3F00B7B3FE /* TargetBar.swift */,
 				064193701F0AA72D00B7B3FE /* TargetSquare.swift */,
 			);
 			name = "Plinker Targets";
@@ -107,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				069211891EFF499B000953BA /* AppDelegate.swift */,
+				064193781F0D6D3A00B7B3FE /* Global.swift */,
 				069211A11F015D00000953BA /* MenuButtons.swift */,
 				069211A71F017933000953BA /* GameIntroView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
@@ -269,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				064193771F0D3F3F00B7B3FE /* TargetBar.swift in Sources */,
 				069211A41F016191000953BA /* GameOverView.swift in Sources */,
 				069211901EFF499B000953BA /* GameScene.swift in Sources */,
 				0641936F1F0AA04000B7B3FE /* CustomColor.swift in Sources */,
@@ -276,6 +283,7 @@
 				06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */,
 				0641936D1F0A9F3D00B7B3FE /* Target.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
+				064193791F0D6D3A00B7B3FE /* Global.swift in Sources */,
 				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
