@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		064193631F06BA8C00B7B3FE /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193621F06BA8C00B7B3FE /* Animation.swift */; };
+		0641936D1F0A9F3D00B7B3FE /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641936C1F0A9F3D00B7B3FE /* Target.swift */; };
+		0641936F1F0AA04000B7B3FE /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641936E1F0AA04000B7B3FE /* CustomColor.swift */; };
+		064193711F0AA72D00B7B3FE /* TargetSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193701F0AA72D00B7B3FE /* TargetSquare.swift */; };
+		064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193741F0C6D2E00B7B3FE /* TargetCross.swift */; };
 		0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211891EFF499B000953BA /* AppDelegate.swift */; };
 		0692118C1EFF499B000953BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118B1EFF499B000953BA /* GameScene.sks */; };
 		0692118E1EFF499B000953BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118D1EFF499B000953BA /* Actions.sks */; };
@@ -26,6 +30,10 @@
 
 /* Begin PBXFileReference section */
 		064193621F06BA8C00B7B3FE /* Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		0641936C1F0A9F3D00B7B3FE /* Target.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
+		0641936E1F0AA04000B7B3FE /* CustomColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
+		064193701F0AA72D00B7B3FE /* TargetSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetSquare.swift; sourceTree = "<group>"; };
+		064193741F0C6D2E00B7B3FE /* TargetCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetCross.swift; sourceTree = "<group>"; };
 		069211861EFF499B000953BA /* plinker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = plinker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		069211891EFF499B000953BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0692118B1EFF499B000953BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -58,6 +66,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		064193721F0ADF7800B7B3FE /* Plinker Targets */ = {
+			isa = PBXGroup;
+			children = (
+				0641936C1F0A9F3D00B7B3FE /* Target.swift */,
+				064193741F0C6D2E00B7B3FE /* TargetCross.swift */,
+				064193701F0AA72D00B7B3FE /* TargetSquare.swift */,
+			);
+			name = "Plinker Targets";
+			sourceTree = "<group>";
+		};
+		064193731F0ADF9200B7B3FE /* sks files */ = {
+			isa = PBXGroup;
+			children = (
+				0692118B1EFF499B000953BA /* GameScene.sks */,
+				0692118D1EFF499B000953BA /* Actions.sks */,
+			);
+			name = "sks files";
+			sourceTree = "<group>";
+		};
 		0692117D1EFF499B000953BA = {
 			isa = PBXGroup;
 			children = (
@@ -84,9 +111,10 @@
 				069211A71F017933000953BA /* GameIntroView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
 				069211A31F016191000953BA /* GameOverView.swift */,
-				0692118B1EFF499B000953BA /* GameScene.sks */,
-				0692118D1EFF499B000953BA /* Actions.sks */,
+				064193721F0ADF7800B7B3FE /* Plinker Targets */,
+				064193731F0ADF9200B7B3FE /* sks files */,
 				0692118F1EFF499B000953BA /* GameScene.swift */,
+				0641936E1F0AA04000B7B3FE /* CustomColor.swift */,
 				06962E311F041841004D290B /* ProjectileDrawings.swift */,
 				069211911EFF499B000953BA /* GameViewController.swift */,
 				064193621F06BA8C00B7B3FE /* Animation.swift */,
@@ -243,12 +271,16 @@
 			files = (
 				069211A41F016191000953BA /* GameOverView.swift in Sources */,
 				069211901EFF499B000953BA /* GameScene.swift in Sources */,
+				0641936F1F0AA04000B7B3FE /* CustomColor.swift in Sources */,
 				069211921EFF499B000953BA /* GameViewController.swift in Sources */,
 				06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */,
+				0641936D1F0A9F3D00B7B3FE /* Target.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
 				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
+				064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */,
+				064193711F0AA72D00B7B3FE /* TargetSquare.swift in Sources */,
 				0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

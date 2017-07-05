@@ -16,36 +16,31 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     var cueTrajectory = ProjectileDrawings()
     var scene = GameScene()
     let view3 = SKView()
-    
+    var score = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(displayP3Red: 7/255, green: 7/255, blue: 7/255, alpha: 0.6)
-        let view2 = UIView(frame: CGRect(x: 6*sw, y: 6*sh, width: 363*sw, height: 655*sh))
-        view2.backgroundColor = .white
-        view.addSubview(view2)
-        view3.frame = view2.bounds
-        view2.addSubview(view3)
+        view.backgroundColor = CustomColor.boundaryColor
+       // let view2 = UIView(frame: CGRect(x: 6*sw, y: 6*sh, width: 363*sw, height: 655*sh))
+      //  view2.backgroundColor = .white
+      //  view.addSubview(view2)
+        view3.frame = self.view.bounds
+        view.addSubview(view3)
         
         scene = GameScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
         scene.scaleMode = .aspectFill
         scene.delegateRefresh = self
         view3.presentScene(scene)
-        
         view3.ignoresSiblingOrder = true
-        
         view3.showsFPS = true
         view3.showsNodeCount = true
         
         if !cueTrajectory.isDescendant(of: view) {
             view.addSubview(cueTrajectory)
         }
-        
     }
-    
-    
-    
+ 
     override func viewDidAppear(_ animated: Bool) {
         cover.frame = view.bounds
         cover.backgroundColor = .white
@@ -117,7 +112,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
             self.delay(bySeconds: 3.0) {
                 self.cover.removeFromSuperview()
-                self.scene.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: self.scene.frame.width, height: self.scene.frame.height))
+
          
             }
             
@@ -132,6 +127,10 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             cueTrajectory.alpha = 0.0
         }
     }
+    func pointScored() {
+        score += 1
+    }
+    
     func refresh(start: CGPoint, end: CGPoint) {
         
         let x = scene.cue.position.x
