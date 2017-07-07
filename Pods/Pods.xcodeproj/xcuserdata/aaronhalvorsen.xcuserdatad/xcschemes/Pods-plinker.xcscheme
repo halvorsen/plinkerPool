@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9E37699BF5A7AE1B09D6C71D34D05F08"
+               BlueprintIdentifier = "24203E2A99A1775AC3C3DA792526F67C"
                BuildableName = "Pods_plinker.framework"
                BlueprintName = "Pods-plinker"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9E37699BF5A7AE1B09D6C71D34D05F08"
+            BlueprintIdentifier = "24203E2A99A1775AC3C3DA792526F67C"
             BuildableName = "Pods_plinker.framework"
             BlueprintName = "Pods-plinker"
             ReferencedContainer = "container:Pods.xcodeproj">

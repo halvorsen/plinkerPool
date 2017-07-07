@@ -15,7 +15,7 @@ protocol refreshDelegate: class {
     func addPointDecrementCount()
     func addStopCueButton()
     func removeStopCueButton()
-    
+    func gameOver()
 }
 
 class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
@@ -31,7 +31,9 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     var startTouchLocation = CGPoint(x: 0, y: 0)
     var endTouchLocation = CGPoint(x: 0, y: 0)
     var boundary = SKShapeNode()
-
+    var target1 = [TargetHorizontal]()
+    var target2 = [TargetVertical]()
+    
     enum CollisionTypes: UInt32 {
         
         case ball1 = 1
@@ -43,7 +45,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         case TargetHorizontal
         case TargetVertical
     }
-
+    
     override func didMove(to view: SKView) {
         
         self.physicsWorld.contactDelegate = self
@@ -85,28 +87,27 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             CGPoint(x: 375*sw/2,y: 93*sh),
             CGPoint(x: 375*sw/2,y: 77*sh),
             CGPoint(x: 375*sw/2,y: 561*sh),
-            CGPoint(x: 96*sw,y: 120*sh),
+            CGPoint(x: 96*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 322*sh),
             CGPoint(x: 266*sw,y: 500*sh),
             ]
         
         let targetLocationsBarDirection: [Direction] = [
-        .up,
-        .down,
-        .down,
-        .left,
-        .right,
-        .right,
-        .right
+            .up,
+            .down,
+            .down,
+            .left,
+            .right,
+            .right,
+            .right
         ]
         
         let structureDictionary : [Int:([CGPoint],Int,String)] = [
             0:(targetLocationsSquare,4,"square"),
             1:(targetLocationsCross,4,"cross"),
-            2:(targetLocationsBar,3,"bar"),
-            
-        ]
+            2:(targetLocationsBar,3,"bar")
+            ]
         
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         self.physicsBody?.categoryBitMask = 4
@@ -114,23 +115,24 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         
         switch randomUseCenterStructure {
         case 1,2:
-        
+            
             let structureKey = Int(arc4random_uniform(3))
             let randomPlace = Int(arc4random_uniform(UInt32(structureDictionary[structureKey]!.0.count)))
             let locationOfStructure = structureDictionary[structureKey]!.0[randomPlace]
             var myStructure: Any?
             let targetsOnStructure = structureDictionary[structureKey]!.1
             switch structureDictionary[structureKey]!.2 {
+                
             case "square":
                 myStructure = TargetSquare(originCenter: locationOfStructure)
                 for (location,orientation) in [((myStructure! as! TargetSquare).horizontal1Location,"h"),((myStructure! as! TargetSquare).horizontal2Location,"h"),((myStructure! as! TargetSquare).vertical1Location,"v"),((myStructure! as! TargetSquare).vertical2Location,"v")] {
                     
                     if orientation == "h" {
-                        let _ = TargetHorizontal(origin: location, scene: self)
-                     
+                        target1.append(TargetHorizontal(origin: location, scene: self))
+                        
                     } else {
-                       let _ = TargetVertical(origin: location, scene: self)
-                      
+                        target2.append(TargetVertical(origin: location, scene: self))
+                        
                     }
                     
                 }
@@ -140,31 +142,22 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
                 myStructure = TargetCross(originCenter: locationOfStructure)
                 for (location) in [((myStructure! as! TargetCross).horizontal1Location),((myStructure! as! TargetCross).horizontal2Location),((myStructure! as! TargetCross).horizontal3Location),((myStructure! as! TargetCross).horizontal4Location)] {
                     
-                    let _ = TargetHorizontal(origin: location, scene: self)
+                    target1.append(TargetHorizontal(origin: location, scene: self))
                 }
                 self.addChild(myStructure! as! TargetCross)
             case "bar":
                 myStructure = TargetBar(originCenter: locationOfStructure, orientation: targetLocationsBarDirection[randomPlace])
                 for (location) in [((myStructure! as! TargetBar).location1),((myStructure! as! TargetBar).location2),((myStructure! as! TargetBar).location3)] {
                     if targetLocationsBarDirection[randomPlace] == .down || targetLocationsBarDirection[randomPlace] == .up {
-                    let _ = TargetHorizontal(origin: location, scene: self)
+                        target1.append(TargetHorizontal(origin: location, scene: self))
                     } else {
-                    let _ = TargetVertical(origin: location, scene: self)
+                        target2.append(TargetVertical(origin: location, scene: self))
                     }
                 }
                 self.addChild(myStructure! as! TargetBar)
             default:
                 break
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
             var indexesForSingleTargets = [Int]()
             while indexesForSingleTargets.count < 9 - targetsOnStructure {
@@ -173,21 +166,17 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
                     indexesForSingleTargets.append(randomInt)
                 }
             }
-            print("indexes: \(indexesForSingleTargets)")
+            
             for index in indexesForSingleTargets {
                 let location = targetLocationsSingle[index].0
                 var target: Any?
                 if targetLocationsSingle[index].1 == "h" {
-                    target = TargetHorizontal(origin: location, scene: self)
-                  //  self.addChild(target as! TargetHorizontal)
+                    target1.append(TargetHorizontal(origin: location, scene: self))
                 } else {
-                    target = TargetVertical(origin: location, scene: self)
-                   // self.addChild(target as! TargetVertical)
+                    target2.append(TargetVertical(origin: location, scene: self))
                 }
                 
             }
-            
-            
             
         case 0:
             
@@ -198,18 +187,15 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
                     indexesForSingleTargets.append(randomInt)
                 }
             }
-          
+            
             for index in indexesForSingleTargets {
                 let location = targetLocationsSingle[index].0
                 var target: Any?
                 if targetLocationsSingle[index].1 == "h" {
-                    target = TargetHorizontal(origin: location, scene: self)
-                //    self.addChild(target as! TargetHorizontal)
+                    target1.append(TargetHorizontal(origin: location, scene: self))
                 } else {
-                    target = TargetVertical(origin: location, scene: self)
-                 //   self.addChild(target as! TargetVertical)
+                    target2.append(TargetVertical(origin: location, scene: self))
                 }
-                
             }
             
         default: break
@@ -218,12 +204,12 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         
         addBalls()
         
-        delay(bySeconds: 2.0) {
+        Global.delay(bySeconds: 2.0) {
             for ball in self.balls {
                 ball.physicsBody?.linearDamping = 100000
             }
             self.cue.physicsBody?.linearDamping = 100000
-            self.delay(bySeconds: 0.5) {
+            Global.delay(bySeconds: 0.5) {
                 self.on = true
                 for ball in self.balls {
                     ball.physicsBody?.linearDamping = self.initialDamping
@@ -245,26 +231,30 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         (357,595,6,60),
         
         ]
-    
+   
+    var targetTrash = [SKShapeNode]()
     func didBegin(_ contact: SKPhysicsContact) {
         
-        print("bodyA: \(contact.bodyA.categoryBitMask)")
-        print("bodyB: \(contact.bodyB.categoryBitMask)")
         if on {
-        if (contact.bodyA.categoryBitMask == 2 || contact.bodyA.categoryBitMask == 8) && contact.bodyB.categoryBitMask == 1 {
-           
-            if let target = contact.bodyA.node as? SKShapeNode {
+            
+            if (contact.bodyA.categoryBitMask == 2 || contact.bodyA.categoryBitMask == 8) && contact.bodyB.categoryBitMask == 1 {
+              
+                if let target = contact.bodyA.node as? SKShapeNode {
+                    if !targetTrash.contains(target) {
+                    targetTrash.append(target)
+                    target.removeFromParent()
+                    delegateRefresh?.addPointDecrementCount()
+                        if let ball = contact.bodyB.node as? SKShapeNode {
+                            
+                            
+                            ball.removeFromParent()
+                        }
+                    }
+                    
+                }
                 
-                target.removeFromParent()
-                delegateRefresh?.addPointDecrementCount()
-            } 
-            if let ball = contact.bodyB.node as? SKShapeNode {
                
-            ball.removeFromParent()
             }
-            
-            
-        }
         }
     }
     
@@ -296,13 +286,13 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     
     func addBalls() {
         
-        for i in 1...11 {
+        for i in 1...10 {
             
             let colors = [CustomColor.color1, CustomColor.color2, CustomColor.color3, CustomColor.color4]
             let circle = SKShapeNode(circleOfRadius: self.ballRadius*self.sw ) // Create circle
             circle.position = CGPoint(x: 100*self.sw, y: 667*self.sh/2 + CGFloat(i)*30*sh)//
             let select = colors[Int(arc4random_uniform(4))]
-           // circle.strokeColor = select
+            // circle.strokeColor = select
             circle.fillColor = select
             circle.physicsBody = SKPhysicsBody(circleOfRadius: self.ballRadius*self.sw)
             circle.physicsBody?.isDynamic = true
@@ -342,56 +332,78 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         cue.physicsBody?.applyImpulse(CGVector(dx: dx, dy: dy))
         
     }
-    
+    var targetsLeftWhenShotLast = Int()
+    var madeAShot = false
+    var touchDownPoint = CGPoint()
     func touchDown(atPoint pos : CGPoint) {
-        endTouchLocation = pos//CGPoint(x: cue.frame.midX, y: cue.frame.midY)
-        startTouchLocation = pos//CGPoint(x: cue.frame.midX, y: cue.frame.midY)
+        touchDownPoint = pos
+        endTouchLocation = pos
+        startTouchLocation = pos
         delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
         delegateRefresh?.turn(on: true)
     }
     
     func touchMoved(toPoint pos : CGPoint) {
         endTouchLocation = pos
-        
         delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
     }
     
+    var timer1 = Timer()
+    var timer2 = Timer()
+    var timer3 = Timer()
+    
+    
     func touchUp(atPoint pos : CGPoint) {
+        guard abs(pos.x - touchDownPoint.x) > 3 || abs(pos.y - touchDownPoint.y) > 3 else {return}
+        madeAShot = false
+        timer1.invalidate()
+        timer2.invalidate()
+        timer3.invalidate()
+        self.changeDamping(amount: self.initialDamping - 0.00001)
+        targetsLeftWhenShotLast = Global.targetsLeft
         endTouchLocation = pos
         let dx = startTouchLocation.x - endTouchLocation.x
         let dy = startTouchLocation.y - endTouchLocation.y
         let amplitude = CGFloat(sqrt(Double(dx*dx + dy*dy)))
         cue.physicsBody?.applyImpulse(CGVector(dx: -10000*dx/amplitude, dy: -10000*dy/amplitude))
-        delay(bySeconds: 3.5) {
-            
-            for ball in self.balls {
-                ball.physicsBody?.linearDamping = 3
-            }
-            self.cue.physicsBody?.linearDamping = 3
-            
-            self.delay(bySeconds: 1.0) {
-                for ball in self.balls {
-                    ball.physicsBody?.linearDamping = 10
-                }
-                self.cue.physicsBody?.linearDamping = 10
-                self.delay(bySeconds: 0.5) {
-                    for ball in self.balls {
-                        ball.physicsBody?.linearDamping = self.initialDamping
-                    }
-                    self.cue.physicsBody?.linearDamping = self.initialDamping
-                    self.delegateRefresh?.removeStopCueButton()
-                }
-            }
+        
+        timer1 = Timer.scheduledTimer(withTimeInterval: 3.5, repeats: false) {_ in 
+            self.changeDamping(amount: 3)
         }
+        timer2 = Timer.scheduledTimer(withTimeInterval: 4.5, repeats: false) {_ in 
+            self.changeDamping(amount: 10)
+        }
+        timer3 = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {_ in 
+            self.changeDamping(amount: self.initialDamping)
+        }
+
         delegateRefresh?.turn(on: false)
         
     }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //        if let label = self.label {
-        //            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        //        }
+    
+    private func changeDamping(amount: CGFloat) {
         
+            
+            for ball in self.balls {
+                
+                ball.physicsBody?.linearDamping = amount
+            }
+            self.cue.physicsBody?.linearDamping = amount
+            
+            if amount == initialDamping {
+                if Global.targetsLeft == targetsLeftWhenShotLast {
+                    delegateRefresh?.gameOver()
+                    print("GAME OVER!")
+                }
+                delegateRefresh?.removeStopCueButton()
+            }
+            
+        
+    }
+    
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
@@ -413,24 +425,5 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     }
 }
 
-extension SKScene {
-    func delay(bySeconds seconds: Double, dispatchLevel: DispatchLevel = .main, closure: @escaping () -> Void) {
-        let dispatchTime = DispatchTime.now() + seconds
-        dispatchLevel.dispatchQueue.asyncAfter(deadline: dispatchTime, execute: closure)
-    }
-    
-    enum DispatchLevel {
-        case main, userInteractive, userInitiated, utility, background
-        var dispatchQueue: DispatchQueue {
-            switch self {
-            case .main:                 return DispatchQueue.main
-            case .userInteractive:      return DispatchQueue.global(qos: .userInteractive)
-            case .userInitiated:        return DispatchQueue.global(qos: .userInitiated)
-            case .utility:              return DispatchQueue.global(qos: .utility)
-            case .background:           return DispatchQueue.global(qos: .background)
-            }
-        }
-    }
-}
 
 

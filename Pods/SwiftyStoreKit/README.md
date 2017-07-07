@@ -74,7 +74,7 @@ SwiftyStoreKit.retrieveProductsInfo(["com.musevisions.SwiftyStoreKit.Purchase1"]
 }
 ```
 
-### Purchase a product
+### Purchase a product (given a product id)
 
 * **Atomic**: to be used when the content is delivered immediately.
 
@@ -125,6 +125,22 @@ SwiftyStoreKit.purchaseProduct("com.musevisions.SwiftyStoreKit.Purchase1", quant
     }
 }
 ```
+
+### Purchase a product (given a SKProduct)
+
+This is a variant of the method above that can be used to purchase a product when the corresponding `SKProduct` has already been retrieved with `retrieveProductsInfo`: 
+
+```swift
+SwiftyStoreKit.retrieveProductsInfo(["com.musevisions.SwiftyStoreKit.Purchase1"]) { result in
+    if let product = result.retrievedProducts.first {
+        SwiftyStoreKit.purchaseProduct(product, quantity: 1, atomically: true) { result in
+            // handle result (same as above)
+        }
+    }
+}
+```
+
+Using this `purchaseProduct` method guarantees that only one network call is made to StoreKit to perform the purchase, as opposed to one call to get the product and another to perform the purchase.
 
 ### Restore previous purchases
 
@@ -246,7 +262,7 @@ let receiptString = receiptData.base64EncodedString(options: [])
 
 ```swift
 let appleValidator = AppleReceiptValidator(service: .production)
-SwiftyStoreKit.verifyReceipt(using: appleValidator, password: "your-shared-secret") { result in
+SwiftyStoreKit.verifyReceipt(using: appleValidator, password: "your-shared-secret", forceRefresh: false) { result in
     switch result {
     case .success(let receipt):
         print("Verify receipt Success: \(receipt)")
@@ -255,6 +271,8 @@ SwiftyStoreKit.verifyReceipt(using: appleValidator, password: "your-shared-secre
 	}
 }
 ```
+
+Note: you can specify `forceRefresh: true` to force SwiftyStoreKit to refresh the receipt with Apple, even if a local receipt is already stored.
 
 ## Verifying purchases and subscriptions
 

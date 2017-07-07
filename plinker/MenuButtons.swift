@@ -14,7 +14,8 @@ class SubscribeToPremiumButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.titleLabel!.text! = "NO ADS"
+        self.setTitle("NO ADS", for: .normal)
+        
         self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 96*sw, height: 42*sh)
@@ -32,7 +33,7 @@ class PlayButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.titleLabel?.text = "PLAY"
+        self.setTitle("PLAY", for: .normal)
         self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 72*sw, height: 42*sh)
@@ -50,7 +51,7 @@ class ReplayButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.titleLabel?.text = "REPLAY"
+        self.setTitle("REPLAY", for: .normal)
         self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 96*sw, height: 42*sh)
@@ -68,8 +69,8 @@ class GameCenterButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.titleLabel!.text! = "GAME CENTER"
-        self.titleLabel!.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.setTitle("GAME CENTER", for: .normal)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 154*sw, height: 42*sh)
         self.frame.origin = origin
@@ -86,10 +87,31 @@ class MenuButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.titleLabel?.text = "MENU"
+        self.setTitle("MENU", for: .normal)
         self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 77*sw, height: 42*sh)
+        self.frame.origin = origin
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+class OneMoreLife: UIButton, BrothersUIAutoLayout {
+    
+    init() {super.init(frame: .zero)}
+    init(color: UIColor, origin: CGPoint) {
+        super.init(frame: .zero)
+        self.setTitle("ONE MORE LIFE  5", for: .normal)
+        self.setTitleColor(color, for: .normal)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.layer.borderColor = color.cgColor
+        self.layer.borderWidth = 2
+        self.backgroundColor = .clear
+        self.frame.size = CGSize(width: 185*sw, height: 42*sh)
         self.frame.origin = origin
     }
     

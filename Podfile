@@ -7,5 +7,9 @@ target 'plinker' do
 
   # Pods for plinker
     pod 'SwiftyStoreKit'
+    pod 'GCHelper'
+    pod 'Fabric'
+    pod 'Crashlytics'
+
 
 end

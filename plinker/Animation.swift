@@ -92,7 +92,7 @@ class Animation: UIView, BrothersUIAutoLayout {
             i += 1
         }
         i = 0
-        delay(bySeconds: 0.5) {
+        Global.delay(bySeconds: 0.5) {
             for location in smallLocations {
                 UIView.animate(withDuration: 1.0) {
                     balls[i].frame.origin.x = location.x - ballRadius*self.sw
@@ -102,7 +102,7 @@ class Animation: UIView, BrothersUIAutoLayout {
                 i += 1
             }
 
-            self.delay(bySeconds: 0.5) {
+            Global.delay(bySeconds: 0.5) {
                 i = 0
                 for location in largeLocations {
                     UIView.animate(withDuration: 1.0) {
@@ -111,7 +111,7 @@ class Animation: UIView, BrothersUIAutoLayout {
                     }
                     i += 1
                 }
-                self.delay(bySeconds: 0.5) {
+                Global.delay(bySeconds: 0.5) {
                     i = 0
                     for location in largeLocations {
                         UIView.animate(withDuration: 1.0) {
@@ -120,13 +120,13 @@ class Animation: UIView, BrothersUIAutoLayout {
                         }
                         i += 1
                     }
-                    self.delay(bySeconds: 1.0) {
+                    Global.delay(bySeconds: 1.0) {
                         
                         UIView.animate(withDuration: 0.5){
                             self.alpha = 0
 
                         }
-                        self.delay(bySeconds: 1.2) {
+                        Global.delay(bySeconds: 1.2) {
                             
                             self.removeFromSuperview()
                         }
@@ -154,23 +154,3 @@ class Animation: UIView, BrothersUIAutoLayout {
     
 }
 
-extension Animation {
-    
-    func delay(bySeconds seconds: Double, dispatchLevel: DispatchLevel = .main, closure: @escaping () -> Void) {
-        let dispatchTime = DispatchTime.now() + seconds
-        dispatchLevel.dispatchQueue.asyncAfter(deadline: dispatchTime, execute: closure)
-    }
-    
-    enum DispatchLevel {
-        case main, userInteractive, userInitiated, utility, background
-        var dispatchQueue: DispatchQueue {
-            switch self {
-            case .main:                 return DispatchQueue.main
-            case .userInteractive:      return DispatchQueue.global(qos: .userInteractive)
-            case .userInitiated:        return DispatchQueue.global(qos: .userInitiated)
-            case .utility:              return DispatchQueue.global(qos: .utility)
-            case .background:           return DispatchQueue.global(qos: .background)
-            }
-        }
-    }
-}

@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>GCHelper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-plinker.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>9E37699BF5A7AE1B09D6C71D34D05F08</key>
+		<key>026306665C694E34302D7BEAFBE14153</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ECAF6FC401D9DC3EA3B20EA6FD275290</key>
+		<key>24203E2A99A1775AC3C3DA792526F67C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA4A8A52A244CA0C34968D86876C9E35</key>
 		<dict>
 			<key>primary</key>
 			<true/>

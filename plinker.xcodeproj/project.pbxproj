@@ -25,7 +25,6 @@
 		069211A21F015D00000953BA /* MenuButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A11F015D00000953BA /* MenuButtons.swift */; };
 		069211A41F016191000953BA /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A31F016191000953BA /* GameOverView.swift */; };
 		069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A51F01727C000953BA /* UIProtocolExtentions.swift */; };
-		069211A81F017933000953BA /* GameIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211A71F017933000953BA /* GameIntroView.swift */; };
 		06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06962E311F041841004D290B /* ProjectileDrawings.swift */; };
 		2104A0B7D67CB4D3EFFE9173 /* Pods_plinker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE2256B852D377CE6408BF74 /* Pods_plinker.framework */; };
 /* End PBXBuildFile section */
@@ -51,7 +50,6 @@
 		069211A11F015D00000953BA /* MenuButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuButtons.swift; sourceTree = "<group>"; };
 		069211A31F016191000953BA /* GameOverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		069211A51F01727C000953BA /* UIProtocolExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIProtocolExtentions.swift; sourceTree = "<group>"; };
-		069211A71F017933000953BA /* GameIntroView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameIntroView.swift; path = ../GameIntroView.swift; sourceTree = "<group>"; };
 		06962E311F041841004D290B /* ProjectileDrawings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectileDrawings.swift; sourceTree = "<group>"; };
 		3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.debug.xcconfig"; sourceTree = "<group>"; };
 		87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plinker.release.xcconfig"; path = "Pods/Target Support Files/Pods-plinker/Pods-plinker.release.xcconfig"; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 				069211891EFF499B000953BA /* AppDelegate.swift */,
 				064193781F0D6D3A00B7B3FE /* Global.swift */,
 				069211A11F015D00000953BA /* MenuButtons.swift */,
-				069211A71F017933000953BA /* GameIntroView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
 				069211A31F016191000953BA /* GameOverView.swift */,
 				064193721F0ADF7800B7B3FE /* Plinker Targets */,
@@ -162,6 +159,7 @@
 				069211841EFF499B000953BA /* Resources */,
 				30B5725209272E26FE83D4DE /* [CP] Embed Pods Frameworks */,
 				008FF4FB549037905BE9B0F6 /* [CP] Copy Pods Resources */,
+				0641937A1F0FFB5200B7B3FE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -238,6 +236,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-plinker/Pods-plinker-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		0641937A1F0FFB5200B7B3FE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" a9cc3c114b202ec31390e423f8db307328800a9f 8999b85b5b17d0926cf3c5c45657aee0032aa33c613d4bf7779c97b9eaefdeca";
+		};
 		30B5725209272E26FE83D4DE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,7 +295,6 @@
 				0641936D1F0A9F3D00B7B3FE /* Target.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
 				064193791F0D6D3A00B7B3FE /* Global.swift in Sources */,
-				069211A81F017933000953BA /* GameIntroView.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
 				064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */,
@@ -413,6 +423,8 @@
 			baseConfigurationReference = 3C6CD54DDCF8AF78413B5BD5 /* Pods-plinker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;
 				INFOPLIST_FILE = plinker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -427,6 +439,8 @@
 			baseConfigurationReference = 87323BCCBEA979D28EF1C5F2 /* Pods-plinker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;
 				INFOPLIST_FILE = plinker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

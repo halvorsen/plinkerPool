@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import GCHelper
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,7 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        Fabric.with([Crashlytics.self])
+        GCHelper.sharedInstance.authenticateLocalUser()
+        
+        if let skin = UserDefaults.standard.string(forKey: "skin") {
+            switch skin {
+            case "whale": Global.skin = "whale"
+            case "unicown": Global.skin = "unicown"
+            case "squid": Global.skin = "squid"
+            default: break
+            }
+        }
+        
         return true
     }
 
@@ -36,12 +51,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-        if !UserDefaults.standard.bool(forKey: "launchedBefore") {
-        UserDefaults.standard.set(0, forKey: "topScore")
-        UserDefaults.standard.set(true, forKey: "launchedBefore")
-        } else {
         Global.topScore = UserDefaults.standard.integer(forKey: "topScore")
+        
+        
+        print("highscore: \(Global.topScore)")
+        
+        if UserDefaults.standard.bool(forKey: "isPremiumMember") {
+            Global.isPremium = true
         }
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
