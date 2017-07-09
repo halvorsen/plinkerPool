@@ -50,6 +50,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         view3.addSubview(score)
         
         let skin = UIImageView(frame: CGRect(x: 10*sw, y: 144*sh, width: 355*sw, height: 355*sw))
+        skin.alpha = 0.5
         switch Global.skin {
             case "whale": skin.image = #imageLiteral(resourceName: "whale")
             case "unicown": skin.image = #imageLiteral(resourceName: "unicown")
@@ -72,13 +73,44 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         view.addSubview(cover)
 
     }
-    
+    var checkOnce = true
     @objc private func stopCueFunc() {
+        if checkOnce {
+            checkOnce = false
+        print("stopcuefunc")
         scene.cue.physicsBody?.linearDamping = 10000000
         Global.delay(bySeconds: 0.2) {
             self.scene.cue.physicsBody?.linearDamping = self.scene.initialDamping
         }
-        //removeStopCueButton()
+        
+       
+        var shouldStop = true
+        
+        
+        loop: for ball in scene.balls {
+            print("for ball loop")
+            if (ball.physicsBody?.velocity.dx)! > CGFloat(0.05) || (ball.physicsBody?.velocity.dy)! > CGFloat(0.05) {
+                print("physics body is moving")
+                shouldStop = false
+                break loop
+            }
+        }
+        print("shouldstop : \(shouldStop)")
+        if shouldStop {
+            print("if shouldstop")
+            scene.timer1.invalidate()
+            scene.timer2.invalidate()
+            scene.timer3.invalidate()
+            removeStopCueButton()
+            Global.delay(bySeconds: 1.0) {
+            self.scene.changeDamping(amount: self.scene.initialDamping)
+            }
+            }
+//            if Global.targetsLeft == scene.targetsLeftWhenShotLast {
+//                gameOver()
+//            }
+            checkOnce = true
+        }
     }
     func addStopCueButton() {
         view3.addSubview(stopCueLabel)
@@ -201,7 +233,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         
     }
     func addPointDecrementCount() {
-        print("addPointDecrementCount()")
+      
         scoreInt += 1
         Global.targetsLeft -= 1
         if Global.targetsLeft == 0 {
@@ -229,12 +261,14 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         return true
     }
     var myGameOverView = GameOverView()
+    var once = true
     func gameOver() {
- 
+        if once {
+            once = false
         if Global.points > Global.topScore {
             Global.topScore = Global.points
             UserDefaults.standard.set(Global.points, forKey: "topScore")
-            GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore", score: Global.points)
+            GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore123654", score: Global.points)
         }
         
         myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color3, bestScore: Global.topScore, thisScore: Global.points)
@@ -244,8 +278,13 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         myGameOverView.noAds.addTarget(self, action: #selector(GameViewController.noAdsFunc(_:)), for: .touchUpInside)
         myGameOverView.extraLife.addTarget(self, action: #selector(GameViewController.extraLifeFunc(_:)), for: .touchUpInside)
         view.addSubview(myGameOverView)
+            Global.delay(bySeconds: 5.0) {
+                self.once = true
+            }
+        }
     }
     @objc private func replayFunc(_ button: UIButton) {
+        
         Global.points = 0
         Global.gaveBonusStrikes = false
         Global.introTitle = "Plinker Pool!"
@@ -276,9 +315,124 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         } else {
             advertisementForExtraLife()
         }
+        Global.gaveBonusStrikes = true
     }
     
+    var myQuadAdView = QuadAdView()
+    var myNumberBlazerAdView = NumberBlazerAdView()
+    var myFoobleAdView = FoobleAdView()
+    var myRansomAdView = RansomAdView()
+    var myFiretailAdView = FiretailAdView()
     private func advertisementForExtraLife() {
+        myGameOverView.frame.origin.x = 375*sw
+        myGameOverView.removeFromSuperview()
+        let whichAd = Int(arc4random_uniform(7))
+        switch whichAd {
+        case 0,1,2:
+            view.addSubview(myQuadAdView)
+            UIView.animate(withDuration: 0.4) {
+                self.myQuadAdView.frame.origin.x = 0
+            }
+            for i in [9,8,7,6,5,4,3,2,1,0] {
+                Global.delay(bySeconds: 0.9*Double(10-i)) {
+                    if i != 0 {
+                        self.myQuadAdView.countLabel.text = "\(i)"
+                    } else {
+                        self.myQuadAdView.countLabel.text = ""
+                        self.myQuadAdView.addSubview(self.myQuadAdView.x)
+                    }
+                }
+            }
+        case 3:
+            view.addSubview(myNumberBlazerAdView)
+            UIView.animate(withDuration: 0.4) {
+                self.myNumberBlazerAdView.frame.origin.x = 0
+            }
+            for i in [9,8,7,6,5,4,3,2,1,0] {
+                Global.delay(bySeconds: 0.9*Double(10-i)) {
+                    if i != 0 {
+                        self.myNumberBlazerAdView.countLabel.text = "\(i)"
+                    } else {
+                        self.myNumberBlazerAdView.countLabel.text = ""
+                        self.myNumberBlazerAdView.addSubview(self.myNumberBlazerAdView.x)
+                    }
+                }
+            }
+        case 4:
+            view.addSubview(myFoobleAdView)
+            UIView.animate(withDuration: 0.4) {
+                self.myFoobleAdView.frame.origin.x = 0
+            }
+            for i in [9,8,7,6,5,4,3,2,1,0] {
+                Global.delay(bySeconds: 0.9*Double(10-i)) {
+                    if i != 0 {
+                        self.myFoobleAdView.countLabel.text = "\(i)"
+                    } else {
+                        self.myFoobleAdView.countLabel.text = ""
+                        self.myFoobleAdView.addSubview(self.myFoobleAdView.x)
+                    }
+                }
+            }
+            
+            var count = 0
+            for char in myFoobleAdView.myCharacters {
+                let myLabel = UILabel()
+                myLabel.frame = CGRect(origin: myFoobleAdView.locations[count], size: CGSize(width: 16*sw, height: 16*sw))
+                myLabel.backgroundColor = UIColor(colorLiteralRed: 112/255, green: 194/255, blue: 206/255, alpha: 1.0)
+                myLabel.textColor = .white
+                myLabel.text = String(char)
+                myLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 9*fontSizeMultiplier)
+                myLabel.textAlignment = .center
+                myLabel.layer.masksToBounds = true
+                myLabel.layer.cornerRadius = 3*sw
+                Global.delay(bySeconds: 0.2*Double(count)) {
+                    self.myFoobleAdView.addSubview(myLabel)
+                }
+                count += 1
+            }
+            
+        case 5:
+            view.addSubview(myRansomAdView)
+            UIView.animate(withDuration: 0.4) {
+                self.myRansomAdView.frame.origin.x = 0
+            }
+            for i in [9,8,7,6,5,4,3,2,1,0] {
+                Global.delay(bySeconds: 0.9*Double(10-i)) {
+                    if i != 0 {
+                        self.myRansomAdView.countLabel.text = "\(i)"
+                    } else {
+                        self.myRansomAdView.countLabel.text = ""
+                        self.myRansomAdView.addSubview(self.myRansomAdView.x)
+                    }
+                }
+            }
+            Global.delay(bySeconds: 3.0) {
+                self.myRansomAdView.myImageView.image = #imageLiteral(resourceName: "RansomAd2")
+            }
+            Global.delay(bySeconds: 6.0) {
+                self.myRansomAdView.myImageView.image = #imageLiteral(resourceName: "RansomAd3")
+            }
+        case 6:
+            view.addSubview(myFiretailAdView)
+            UIView.animate(withDuration: 0.4) {
+                self.myFiretailAdView.frame.origin.x = 0
+            }
+            for i in [9,8,7,6,5,4,3,2,1,0] {
+                Global.delay(bySeconds: 0.9*Double(10-i)) {
+                    if i != 0 {
+                        self.myFiretailAdView.countLabel.text = "\(i)"
+                    } else {
+                        self.myFiretailAdView.countLabel.text = ""
+                        self.myFiretailAdView.addSubview(self.myFiretailAdView.x)
+                    }
+                }
+            }
+        default:
+            break
+        }
+        
+        
+        
         
     }
     

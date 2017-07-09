@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 protocol refreshDelegate: class {
     func refresh(start: CGPoint, end: CGPoint)
@@ -19,6 +20,10 @@ protocol refreshDelegate: class {
 }
 
 class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
+    
+    var playerBounce = [AVAudioPlayer]()
+    var playerPing = [AVAudioPlayer]()
+    
     var viewController: GameViewController!
     var delegateRefresh: refreshDelegate?
     var on = false
@@ -86,7 +91,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         let targetLocationsBar : [CGPoint] = [
             CGPoint(x: 375*sw/2,y: 93*sh),
             CGPoint(x: 375*sw/2,y: 77*sh),
-            CGPoint(x: 375*sw/2,y: 561*sh),
+            CGPoint(x: 3*375*sw/4,y: 561*sh),
             CGPoint(x: 96*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 322*sh),
@@ -107,7 +112,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             0:(targetLocationsSquare,4,"square"),
             1:(targetLocationsCross,4,"cross"),
             2:(targetLocationsBar,3,"bar")
-            ]
+        ]
         
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
         self.physicsBody?.categoryBitMask = 4
@@ -169,7 +174,6 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             
             for index in indexesForSingleTargets {
                 let location = targetLocationsSingle[index].0
-                var target: Any?
                 if targetLocationsSingle[index].1 == "h" {
                     target1.append(TargetHorizontal(origin: location, scene: self))
                 } else {
@@ -190,8 +194,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             
             for index in indexesForSingleTargets {
                 let location = targetLocationsSingle[index].0
-                var target: Any?
-                if targetLocationsSingle[index].1 == "h" {
+                                if targetLocationsSingle[index].1 == "h" {
                     target1.append(TargetHorizontal(origin: location, scene: self))
                 } else {
                     target2.append(TargetVertical(origin: location, scene: self))
@@ -218,6 +221,52 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             }
         }
         
+        var _playerBounce: AVAudioPlayer?
+        var _playerPing: AVAudioPlayer?
+        
+        for _ in 0...9 {
+        
+        guard let url = Bundle.main.url(forResource: "bounce", withExtension: "wav") else {
+            print("error")
+            return
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            _playerBounce = try AVAudioPlayer(contentsOf: url)
+            if let player = _playerBounce {
+                player.prepareToPlay()
+                playerBounce.append(player)
+            
+            }
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        }
+        
+        for _ in 0...3 {
+        guard let url2 = Bundle.main.url(forResource: "ping", withExtension: "wav") else {
+            print("error")
+            return
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            _playerPing = try AVAudioPlayer(contentsOf: url2)
+            if let player = _playerPing {
+                player.prepareToPlay()
+                playerPing.append(player) }
+            
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        }
+        
     }
     
     let locationAndShapes: [(CGFloat,CGFloat,CGFloat,CGFloat)] = [
@@ -231,29 +280,43 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         (357,595,6,60),
         
         ]
-   
+    
     var targetTrash = [SKShapeNode]()
+    var playCount = 0
+    var pingCount = 0
     func didBegin(_ contact: SKPhysicsContact) {
         
         if on {
             
             if (contact.bodyA.categoryBitMask == 2 || contact.bodyA.categoryBitMask == 8) && contact.bodyB.categoryBitMask == 1 {
-              
+                
                 if let target = contact.bodyA.node as? SKShapeNode {
                     if !targetTrash.contains(target) {
-                    targetTrash.append(target)
-                    target.removeFromParent()
-                    delegateRefresh?.addPointDecrementCount()
+                        targetTrash.append(target)
+                        target.removeFromParent()
+                        delegateRefresh?.addPointDecrementCount()
+                        
+                        playerPing[pingCount].play()
+                        playerPing[pingCount].prepareToPlay()
+                            if pingCount < 3 {
+                                pingCount += 1
+                            } else {
+                                pingCount = 0
+                            }
                         if let ball = contact.bodyB.node as? SKShapeNode {
-                            
-                            
+         
                             ball.removeFromParent()
                         }
                     }
-                    
                 }
-                
-               
+            } else {
+                playerBounce[playCount].play()
+                playerBounce[playCount].prepareToPlay()
+                if playCount < 9 {
+                    playCount += 1
+                } else {
+                    playCount = 0
+                }
             }
         }
     }
@@ -297,13 +360,13 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             circle.physicsBody = SKPhysicsBody(circleOfRadius: self.ballRadius*self.sw)
             circle.physicsBody?.isDynamic = true
             circle.physicsBody?.affectedByGravity = false
-            circle.physicsBody?.mass = 1
+            circle.physicsBody?.mass = 10
             circle.physicsBody?.restitution = 0.9
             circle.physicsBody?.linearDamping = self.initialDamping
             circle.physicsBody?.categoryBitMask = 1
             circle.physicsBody?.usesPreciseCollisionDetection = true
             circle.physicsBody?.collisionBitMask = 1 | 2 | 4 | 8 | 16
-            circle.physicsBody?.contactTestBitMask = 2 | 8
+            circle.physicsBody?.contactTestBitMask = 1 | 2 | 4 | 8 | 16
             circle.physicsBody?.friction = 0
             self.addChild(circle)
             self.balls.append(circle)
@@ -335,17 +398,25 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     var targetsLeftWhenShotLast = Int()
     var madeAShot = false
     var touchDownPoint = CGPoint()
+    var touchOnce = true
     func touchDown(atPoint pos : CGPoint) {
+        if touchOnce {
         touchDownPoint = pos
         endTouchLocation = pos
         startTouchLocation = pos
         delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
         delegateRefresh?.turn(on: true)
+        }
     }
-    
+    var previouslySavedTouch = CGPoint()
+    var savedTouch = CGPoint(x: 0,y: 0)
     func touchMoved(toPoint pos : CGPoint) {
+        if touchOnce {
         endTouchLocation = pos
         delegateRefresh?.refresh(start: startTouchLocation, end: endTouchLocation)
+            previouslySavedTouch = savedTouch
+            savedTouch = pos
+        }
     }
     
     var timer1 = Timer()
@@ -354,7 +425,9 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     
     
     func touchUp(atPoint pos : CGPoint) {
-        guard abs(pos.x - touchDownPoint.x) > 3 || abs(pos.y - touchDownPoint.y) > 3 else {return}
+        if touchOnce {
+            endTouchLocation = previouslySavedTouch
+        guard abs(pos.x - touchDownPoint.x) > 2 || abs(pos.y - touchDownPoint.y) > 2 else {return}
         madeAShot = false
         timer1.invalidate()
         timer2.invalidate()
@@ -365,39 +438,45 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         let dx = startTouchLocation.x - endTouchLocation.x
         let dy = startTouchLocation.y - endTouchLocation.y
         let amplitude = CGFloat(sqrt(Double(dx*dx + dy*dy)))
-        cue.physicsBody?.applyImpulse(CGVector(dx: -10000*dx/amplitude, dy: -10000*dy/amplitude))
+        cue.physicsBody?.applyImpulse(CGVector(dx: -16000*dx/amplitude, dy: -16000*dy/amplitude))
         
-        timer1 = Timer.scheduledTimer(withTimeInterval: 3.5, repeats: false) {_ in 
+        timer1 = Timer.scheduledTimer(withTimeInterval: 4.5, repeats: false) {_ in
             self.changeDamping(amount: 3)
         }
-        timer2 = Timer.scheduledTimer(withTimeInterval: 4.5, repeats: false) {_ in 
+        timer2 = Timer.scheduledTimer(withTimeInterval: 5.5, repeats: false) {_ in
             self.changeDamping(amount: 10)
         }
-        timer3 = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {_ in 
+        timer3 = Timer.scheduledTimer(withTimeInterval: 6, repeats: false) {_ in
             self.changeDamping(amount: self.initialDamping)
         }
-
+        
         delegateRefresh?.turn(on: false)
+            touchOnce = false
+            Global.delay(bySeconds: 2.0) {
+                self.touchOnce = true
+            }
+        }
         
     }
     
-    private func changeDamping(amount: CGFloat) {
+    func changeDamping(amount: CGFloat) {
         
+        for ball in self.balls {
             
-            for ball in self.balls {
-                
-                ball.physicsBody?.linearDamping = amount
+            ball.physicsBody?.linearDamping = amount
+        }
+        self.cue.physicsBody?.linearDamping = amount
+        
+        if amount == initialDamping {
+            print("global.targetsleft: \(Global.targetsLeft)")
+            print("targetsLeftWhenShotLast: \(targetsLeftWhenShotLast)")
+            if Global.targetsLeft == targetsLeftWhenShotLast {
+                delegateRefresh?.gameOver()
+                print("GAME OVER!")
             }
-            self.cue.physicsBody?.linearDamping = amount
-            
-            if amount == initialDamping {
-                if Global.targetsLeft == targetsLeftWhenShotLast {
-                    delegateRefresh?.gameOver()
-                    print("GAME OVER!")
-                }
-                delegateRefresh?.removeStopCueButton()
-            }
-            
+            delegateRefresh?.removeStopCueButton()
+        }
+        
         
     }
     

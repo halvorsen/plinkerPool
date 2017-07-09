@@ -14,6 +14,13 @@
 		064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193741F0C6D2E00B7B3FE /* TargetCross.swift */; };
 		064193771F0D3F3F00B7B3FE /* TargetBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193761F0D3F3F00B7B3FE /* TargetBar.swift */; };
 		064193791F0D6D3A00B7B3FE /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193781F0D6D3A00B7B3FE /* Global.swift */; };
+		0641937C1F103FA900B7B3FE /* QuadAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641937B1F103FA900B7B3FE /* QuadAdView.swift */; };
+		0641937E1F108CD600B7B3FE /* NumberBlazerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641937D1F108CD600B7B3FE /* NumberBlazerAdView.swift */; };
+		064193801F108CFF00B7B3FE /* RansomAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0641937F1F108CFF00B7B3FE /* RansomAdView.swift */; };
+		064193821F108D1100B7B3FE /* FoobleAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193811F108D1100B7B3FE /* FoobleAdView.swift */; };
+		064193841F108D5D00B7B3FE /* FiretailAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193831F108D5D00B7B3FE /* FiretailAdView.swift */; };
+		064193861F110BF500B7B3FE /* ping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 064193851F110BF500B7B3FE /* ping.wav */; };
+		064193881F110BFB00B7B3FE /* bounce.wav in Resources */ = {isa = PBXBuildFile; fileRef = 064193871F110BFB00B7B3FE /* bounce.wav */; };
 		0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211891EFF499B000953BA /* AppDelegate.swift */; };
 		0692118C1EFF499B000953BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118B1EFF499B000953BA /* GameScene.sks */; };
 		0692118E1EFF499B000953BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118D1EFF499B000953BA /* Actions.sks */; };
@@ -37,6 +44,13 @@
 		064193741F0C6D2E00B7B3FE /* TargetCross.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetCross.swift; sourceTree = "<group>"; };
 		064193761F0D3F3F00B7B3FE /* TargetBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetBar.swift; sourceTree = "<group>"; };
 		064193781F0D6D3A00B7B3FE /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		0641937B1F103FA900B7B3FE /* QuadAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuadAdView.swift; sourceTree = "<group>"; };
+		0641937D1F108CD600B7B3FE /* NumberBlazerAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberBlazerAdView.swift; sourceTree = "<group>"; };
+		0641937F1F108CFF00B7B3FE /* RansomAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RansomAdView.swift; sourceTree = "<group>"; };
+		064193811F108D1100B7B3FE /* FoobleAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoobleAdView.swift; sourceTree = "<group>"; };
+		064193831F108D5D00B7B3FE /* FiretailAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiretailAdView.swift; sourceTree = "<group>"; };
+		064193851F110BF500B7B3FE /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
+		064193871F110BFB00B7B3FE /* bounce.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bounce.wav; sourceTree = "<group>"; };
 		069211861EFF499B000953BA /* plinker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = plinker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		069211891EFF499B000953BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0692118B1EFF499B000953BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -88,6 +102,15 @@
 			name = "sks files";
 			sourceTree = "<group>";
 		};
+		064193891F110C0B00B7B3FE /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				064193851F110BF500B7B3FE /* ping.wav */,
+				064193871F110BFB00B7B3FE /* bounce.wav */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
 		0692117D1EFF499B000953BA = {
 			isa = PBXGroup;
 			children = (
@@ -111,7 +134,13 @@
 			children = (
 				069211891EFF499B000953BA /* AppDelegate.swift */,
 				064193781F0D6D3A00B7B3FE /* Global.swift */,
+				064193891F110C0B00B7B3FE /* sounds */,
 				069211A11F015D00000953BA /* MenuButtons.swift */,
+				0641937B1F103FA900B7B3FE /* QuadAdView.swift */,
+				0641937D1F108CD600B7B3FE /* NumberBlazerAdView.swift */,
+				0641937F1F108CFF00B7B3FE /* RansomAdView.swift */,
+				064193811F108D1100B7B3FE /* FoobleAdView.swift */,
+				064193831F108D5D00B7B3FE /* FiretailAdView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
 				069211A31F016191000953BA /* GameOverView.swift */,
 				064193721F0ADF7800B7B3FE /* Plinker Targets */,
@@ -212,7 +241,9 @@
 			files = (
 				069211951EFF499B000953BA /* Main.storyboard in Resources */,
 				0692118C1EFF499B000953BA /* GameScene.sks in Resources */,
+				064193881F110BFB00B7B3FE /* bounce.wav in Resources */,
 				069211971EFF499B000953BA /* Assets.xcassets in Resources */,
+				064193861F110BF500B7B3FE /* ping.wav in Resources */,
 				0692119A1EFF499B000953BA /* LaunchScreen.storyboard in Resources */,
 				0692118E1EFF499B000953BA /* Actions.sks in Resources */,
 			);
@@ -293,13 +324,18 @@
 				069211921EFF499B000953BA /* GameViewController.swift in Sources */,
 				06962E321F041841004D290B /* ProjectileDrawings.swift in Sources */,
 				0641936D1F0A9F3D00B7B3FE /* Target.swift in Sources */,
+				064193801F108CFF00B7B3FE /* RansomAdView.swift in Sources */,
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
+				064193841F108D5D00B7B3FE /* FiretailAdView.swift in Sources */,
 				064193791F0D6D3A00B7B3FE /* Global.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
+				064193821F108D1100B7B3FE /* FoobleAdView.swift in Sources */,
 				064193751F0C6D2E00B7B3FE /* TargetCross.swift in Sources */,
 				064193711F0AA72D00B7B3FE /* TargetSquare.swift in Sources */,
+				0641937C1F103FA900B7B3FE /* QuadAdView.swift in Sources */,
 				0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */,
+				0641937E1F108CD600B7B3FE /* NumberBlazerAdView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +464,7 @@
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;
 				INFOPLIST_FILE = plinker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rightBrothers.plinker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rightBrothers.plinkerPool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -444,7 +480,7 @@
 				DEVELOPMENT_TEAM = 3KFA49ZHXN;
 				INFOPLIST_FILE = plinker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rightBrothers.plinker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rightBrothers.plinkerPool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
