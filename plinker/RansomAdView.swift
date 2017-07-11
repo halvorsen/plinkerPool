@@ -13,6 +13,7 @@ class RansomAdView: UIView, BrothersUIAutoLayout {
     var yOrigin = CGFloat()
     var x = UIImageView()
     var myImageView = UIImageView()
+    var myOnceDelegate: onceDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -23,6 +24,7 @@ class RansomAdView: UIView, BrothersUIAutoLayout {
                 self.frame.origin.x = 375*self.sw
             }
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }
             x.removeFromSuperview()
@@ -31,6 +33,7 @@ class RansomAdView: UIView, BrothersUIAutoLayout {
             url(string: "itms-apps://itunes.apple.com/app/id1192831637")
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }//open Ransom
             
@@ -44,7 +47,8 @@ class RansomAdView: UIView, BrothersUIAutoLayout {
     private func url(string: String) {
         if let url = URL(string: string),
             UIApplication.shared.canOpenURL(url)
-        {
+           
+        {self.myOnceDelegate?.onceTouch()
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {

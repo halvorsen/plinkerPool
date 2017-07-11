@@ -8,10 +8,15 @@
 
 import UIKit
 
+protocol onceDelegate: class {
+    func onceTouch()
+}
+
 class QuadAdView: UIView, BrothersUIAutoLayout {
     var countLabel = UILabel()
     var yOrigin = CGFloat()
     var x = UIImageView()
+    var myOnceDelegate: onceDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -22,6 +27,8 @@ class QuadAdView: UIView, BrothersUIAutoLayout {
                 self.frame.origin.x = 375*self.sw
             }
             Global.delay(bySeconds: 0.6) {
+                
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }
             x.removeFromSuperview()
@@ -29,6 +36,7 @@ class QuadAdView: UIView, BrothersUIAutoLayout {
             url(string: "itms-apps://itunes.apple.com/app/id1237961699")
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }
  //open Fooble
@@ -36,18 +44,21 @@ class QuadAdView: UIView, BrothersUIAutoLayout {
            url(string: "itms-apps://itunes.apple.com/app/id1152732418")
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }//open Number Blazer
         } else if pos.x < 375*sw/2 && pos.y > yOrigin + 453*sh {
            url(string: "itms-apps://itunes.apple.com/app/id1192831637")
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }//open Ransom
         } else if pos.x > 375*sw/2 && pos.y > yOrigin + 453*sh {
             //open Firetail
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }
             url(string: "http://firetailapp.com/")
@@ -62,6 +73,7 @@ class QuadAdView: UIView, BrothersUIAutoLayout {
         if let url = URL(string: string),
             UIApplication.shared.canOpenURL(url)
         {
+            self.myOnceDelegate?.onceTouch()
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {

@@ -81,7 +81,7 @@ class ProjectileDrawings: UIView, BrothersUIAutoLayout {
         UIColor(colorLiteralRed: 7/255, green: 7/255, blue: 7/255, alpha: 1.0).set()
         aPath.stroke()
         
-        circlePath = UIBezierPath(arcCenter: endLine, radius: 25*UIScreen.main.bounds.width/750, startAngle: CGFloat(0), endAngle:.pi*2, clockwise: true)
+        circlePath = UIBezierPath(arcCenter: endLine, radius: 24*UIScreen.main.bounds.width/750, startAngle: CGFloat(0), endAngle:.pi*2, clockwise: true)
         // circlePath.stroke()
         UIColor(colorLiteralRed: 162/255, green: 162/255, blue: 162/255, alpha: 1.0).set()
         

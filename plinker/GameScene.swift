@@ -17,6 +17,7 @@ protocol refreshDelegate: class {
     func addStopCueButton()
     func removeStopCueButton()
     func gameOver()
+    func fire()
 }
 
 class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
@@ -52,6 +53,8 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     }
     
     override func didMove(to view: SKView) {
+        
+        
         
         self.physicsWorld.contactDelegate = self
         self.backgroundColor = SKColor.white
@@ -377,7 +380,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         cue = SKShapeNode(circleOfRadius: ballRadius*sw ) // Create circle
         cue.position = CGPoint(x: 100*sw, y: 667*sh/2)  // Center (given scene anchor point is 0.5 for x&y)
         //circle.glowWidth = 1.0
-        cue.strokeColor = CustomColor.cueColor
+       // cue.strokeColor = CustomColor.cueColor
         cue.fillColor = CustomColor.cueColor
         cue.physicsBody = SKPhysicsBody(circleOfRadius: ballRadius*sw)
         cue.physicsBody?.affectedByGravity = false
@@ -398,9 +401,12 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     var targetsLeftWhenShotLast = Int()
     var madeAShot = false
     var touchDownPoint = CGPoint()
-    var touchOnce = true
+    var touchOnce = true { didSet { print(touchOnce) } }
+    var fired = true
     func touchDown(atPoint pos : CGPoint) {
         if touchOnce {
+        delegateRefresh?.fire()
+        fired = false
         touchDownPoint = pos
         endTouchLocation = pos
         startTouchLocation = pos
@@ -425,9 +431,10 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     
     
     func touchUp(atPoint pos : CGPoint) {
-        if touchOnce {
+        if touchOnce  && !fired {
             endTouchLocation = previouslySavedTouch
         guard abs(pos.x - touchDownPoint.x) > 2 || abs(pos.y - touchDownPoint.y) > 2 else {return}
+            fired = true
         madeAShot = false
         timer1.invalidate()
         timer2.invalidate()
@@ -452,7 +459,42 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         
         delegateRefresh?.turn(on: false)
             touchOnce = false
-            Global.delay(bySeconds: 2.0) {
+            Global.delay(bySeconds: 0.5) {
+                self.touchOnce = true
+            }
+        }
+        
+    }
+    
+    func tapTouch() {
+        if touchOnce && !fired {
+            guard abs(startTouchLocation.x - endTouchLocation.x) > 2 || abs(startTouchLocation.y - endTouchLocation.y) > 2 else {return}
+            fired = true
+            madeAShot = false
+            timer1.invalidate()
+            timer2.invalidate()
+            timer3.invalidate()
+            self.changeDamping(amount: self.initialDamping - 0.00001)
+            targetsLeftWhenShotLast = Global.targetsLeft
+            
+            let dx = startTouchLocation.x - endTouchLocation.x
+            let dy = startTouchLocation.y - endTouchLocation.y
+            let amplitude = CGFloat(sqrt(Double(dx*dx + dy*dy)))
+            cue.physicsBody?.applyImpulse(CGVector(dx: -16000*dx/amplitude, dy: -16000*dy/amplitude))
+            
+            timer1 = Timer.scheduledTimer(withTimeInterval: 4.5, repeats: false) {_ in
+                self.changeDamping(amount: 3)
+            }
+            timer2 = Timer.scheduledTimer(withTimeInterval: 5.5, repeats: false) {_ in
+                self.changeDamping(amount: 10)
+            }
+            timer3 = Timer.scheduledTimer(withTimeInterval: 6, repeats: false) {_ in
+                self.changeDamping(amount: self.initialDamping)
+            }
+            
+            delegateRefresh?.turn(on: false)
+            touchOnce = false
+            Global.delay(bySeconds: 0.5) {
                 self.touchOnce = true
             }
         }
@@ -468,8 +510,6 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         self.cue.physicsBody?.linearDamping = amount
         
         if amount == initialDamping {
-            print("global.targetsleft: \(Global.targetsLeft)")
-            print("targetsLeftWhenShotLast: \(targetsLeftWhenShotLast)")
             if Global.targetsLeft == targetsLeftWhenShotLast {
                 delegateRefresh?.gameOver()
                 print("GAME OVER!")

@@ -12,6 +12,7 @@ class NumberBlazerAdView: UIView, BrothersUIAutoLayout {
     var countLabel = UILabel()
     var yOrigin = CGFloat()
     var x = UIImageView()
+    var myOnceDelegate: onceDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -22,6 +23,7 @@ class NumberBlazerAdView: UIView, BrothersUIAutoLayout {
                 self.frame.origin.x = 375*self.sw
             }
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }
             x.removeFromSuperview()
@@ -30,6 +32,7 @@ class NumberBlazerAdView: UIView, BrothersUIAutoLayout {
             url(string: "itms-apps://itunes.apple.com/app/id1152732418")
             x.removeFromSuperview()
             Global.delay(bySeconds: 0.6) {
+                self.myOnceDelegate?.onceTouch()
                 self.removeFromSuperview()
             }//open Number Blazer
         }
@@ -42,7 +45,8 @@ class NumberBlazerAdView: UIView, BrothersUIAutoLayout {
     private func url(string: String) {
         if let url = URL(string: string),
             UIApplication.shared.canOpenURL(url)
-        {
+            
+        {self.myOnceDelegate?.onceTouch()
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {

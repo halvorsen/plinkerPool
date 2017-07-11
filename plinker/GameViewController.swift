@@ -12,7 +12,7 @@ import GameplayKit
 import SwiftyStoreKit
 import GCHelper
 
-class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayout {
+class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayout, UIGestureRecognizerDelegate, onceDelegate {
     
     let cover = UIView()
     var cueTrajectory = ProjectileDrawings()
@@ -23,6 +23,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     let stopCue = UIButton()
     let stopCueLabel = UILabel()
     var timer = Timer()
+    var tap = UITapGestureRecognizer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         scene = GameScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
         scene.scaleMode = .aspectFill
         scene.delegateRefresh = self
+        
         view3.presentScene(scene)
         view3.ignoresSiblingOrder = true
         
@@ -52,81 +54,100 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         let skin = UIImageView(frame: CGRect(x: 10*sw, y: 144*sh, width: 355*sw, height: 355*sw))
         skin.alpha = 0.5
         switch Global.skin {
-            case "whale": skin.image = #imageLiteral(resourceName: "whale")
-            case "unicown": skin.image = #imageLiteral(resourceName: "unicown")
-            case "squid": skin.image = #imageLiteral(resourceName: "squid")
-            default: break
+        case "whale": skin.image = #imageLiteral(resourceName: "whale")
+        case "unicown": skin.image = #imageLiteral(resourceName: "unicown")
+        case "squid": skin.image = #imageLiteral(resourceName: "squid")
+        default: break
         }
         
         view3.addSubview(skin)
-    
+        
         stopCueLabel.frame = CGRect(x: 0,y: 617*sh,width: 375*sw,height: 50*sh)
         stopCueLabel.textColor = CustomColor.boundaryColor
         stopCueLabel.textAlignment = .center
         stopCueLabel.alpha = 0.1
-        stopCueLabel.text = "TAP Screen to freeze cue"
+        stopCueLabel.text = "touch screen to aim"
         stopCue.frame = self.view.bounds
         stopCue.addTarget(self, action: #selector(GameViewController.stopCueFunc), for: .touchUpInside)
-        
+        if Global.level == 1 {
+            view3.addSubview(stopCueLabel)
+        }
         cover.frame = view.bounds
         cover.backgroundColor = .white
         view.addSubview(cover)
-
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(GameViewController.tapFunc(_:)))
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
+        
     }
+    
+    @objc private func tapFunc(_ gesture: UITapGestureRecognizer) {
+        scene.tapTouch()
+    }
+    
     var checkOnce = true
     @objc private func stopCueFunc() {
         if checkOnce {
             checkOnce = false
-        print("stopcuefunc")
-        scene.cue.physicsBody?.linearDamping = 10000000
-        Global.delay(bySeconds: 0.2) {
-            self.scene.cue.physicsBody?.linearDamping = self.scene.initialDamping
-        }
-        
-       
-        var shouldStop = true
-        
-        
-        loop: for ball in scene.balls {
-            print("for ball loop")
-            if (ball.physicsBody?.velocity.dx)! > CGFloat(0.05) || (ball.physicsBody?.velocity.dy)! > CGFloat(0.05) {
-                print("physics body is moving")
-                shouldStop = false
-                break loop
+            
+            scene.cue.physicsBody?.linearDamping = 10000000
+            Global.delay(bySeconds: 0.2) {
+                self.scene.cue.physicsBody?.linearDamping = self.scene.initialDamping
             }
-        }
-        print("shouldstop : \(shouldStop)")
-        if shouldStop {
-            print("if shouldstop")
-            scene.timer1.invalidate()
-            scene.timer2.invalidate()
-            scene.timer3.invalidate()
-            removeStopCueButton()
-            Global.delay(bySeconds: 1.0) {
-            self.scene.changeDamping(amount: self.scene.initialDamping)
+            
+            
+            var shouldStop = true
+            loop: for ball in scene.balls {
+                
+                if (ball.physicsBody?.velocity.dx)! > CGFloat(0.01) || (ball.physicsBody?.velocity.dy)! > CGFloat(0.01) {
+                    
+                    shouldStop = false
+                    break loop
+                }
             }
+            //it seems like i get false velocity readings occationally, so check for v = 0 again
+            loop: for ball in scene.balls {
+                
+                if (ball.physicsBody?.velocity.dx)! < CGFloat(-0.01) || (ball.physicsBody?.velocity.dy)! < CGFloat(-0.01) {
+                    
+                    shouldStop = false
+                    break loop
+                }
             }
-//            if Global.targetsLeft == scene.targetsLeftWhenShotLast {
-//                gameOver()
-//            }
+            
+            if shouldStop {
+             //   self.scene.changeDamping(amount: 100000)
+                scene.timer1.invalidate()
+                scene.timer2.invalidate()
+                scene.timer3.invalidate()
+                removeStopCueButton()
+                Global.delay(bySeconds: 0.5) {
+                    self.scene.changeDamping(amount: self.scene.initialDamping)
+                }
+            }
+            
             checkOnce = true
         }
     }
     func addStopCueButton() {
-        view3.addSubview(stopCueLabel)
+        stopCueLabel.text = "tap screen to freeze cue"
         view3.addSubview(stopCue)
         
     }
+    func fire() {
+        stopCueLabel.text = "lift finger or tap screen to fire"
+    }
     
     func removeStopCueButton() {
-        stopCueLabel.removeFromSuperview()
+        stopCueLabel.text = "touch screen to aim"
         stopCue.removeFromSuperview()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         scoreInt = Global.points
     }
- 
+    
     override func viewDidAppear(_ animated: Bool) {
         
         let myAnimation = Animation()
@@ -196,20 +217,20 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
             Global.delay(bySeconds: 3.0) {
                 self.cover.removeFromSuperview()
-//                self.timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(GameViewController.callForFlash), userInfo: nil, repeats: true)
+                //                self.timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(GameViewController.callForFlash), userInfo: nil, repeats: true)
             }
         }
     }
     
-//    @objc private func callForFlash() {
-//        print("triggered Flash")
-//    for target in self.scene.target1 {
-//    target.flash()
-//    }
-//    for target in self.scene.target2 {
-//    target.flash()
-//    }
-//    }
+    //    @objc private func callForFlash() {
+    //        print("triggered Flash")
+    //    for target in self.scene.target1 {
+    //    target.flash()
+    //    }
+    //    for target in self.scene.target2 {
+    //    target.flash()
+    //    }
+    //    }
     
     func turn(on: Bool) {
         if on {
@@ -233,7 +254,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         
     }
     func addPointDecrementCount() {
-      
+        
         scoreInt += 1
         Global.targetsLeft -= 1
         if Global.targetsLeft == 0 {
@@ -242,12 +263,12 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             if Global.isOddController {
                 Global.delay(bySeconds: 1.0) {
                     
-            self.performSegue(withIdentifier: "fromOddToEven", sender: self)
+                    self.performSegue(withIdentifier: "fromOddToEven", sender: self)
                 }
             } else {
                 
                 Global.delay(bySeconds: 1.0) {
-            self.performSegue(withIdentifier: "fromEvenToOdd", sender: self)
+                    self.performSegue(withIdentifier: "fromEvenToOdd", sender: self)
                 }
             }
         }
@@ -265,19 +286,20 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     func gameOver() {
         if once {
             once = false
-        if Global.points > Global.topScore {
-            Global.topScore = Global.points
-            UserDefaults.standard.set(Global.points, forKey: "topScore")
-            GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore123654", score: Global.points)
-        }
-        
-        myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color3, bestScore: Global.topScore, thisScore: Global.points)
-        myGameOverView.replay.addTarget(self, action: #selector(GameViewController.replayFunc(_:)), for: .touchUpInside)
-//        myGameOverView.menu.addTarget(self, action: #selector(GameViewController.menuFunc(_:)), for: .touchUpInside)
-        myGameOverView.gameCenter.addTarget(self, action: #selector(GameViewController.gameCenterFunc(_:)), for: .touchUpInside)
-        myGameOverView.noAds.addTarget(self, action: #selector(GameViewController.noAdsFunc(_:)), for: .touchUpInside)
-        myGameOverView.extraLife.addTarget(self, action: #selector(GameViewController.extraLifeFunc(_:)), for: .touchUpInside)
-        view.addSubview(myGameOverView)
+            if Global.points > Global.topScore {
+                Global.topScore = Global.points
+                UserDefaults.standard.set(Global.points, forKey: "topScore")
+                GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore123654", score: Global.points)
+            }
+            
+            myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color3, bestScore: Global.topScore, thisScore: Global.points)
+            myGameOverView.replay.addTarget(self, action: #selector(GameViewController.replayFunc(_:)), for: .touchUpInside)
+            //        myGameOverView.menu.addTarget(self, action: #selector(GameViewController.menuFunc(_:)), for: .touchUpInside)
+            myGameOverView.gameCenter.addTarget(self, action: #selector(GameViewController.gameCenterFunc(_:)), for: .touchUpInside)
+            myGameOverView.noAds.addTarget(self, action: #selector(GameViewController.noAdsFunc(_:)), for: .touchUpInside)
+            myGameOverView.extraLife.addTarget(self, action: #selector(GameViewController.extraLifeFunc(_:)), for: .touchUpInside)
+            scene.touchOnce = false
+            view.addSubview(myGameOverView)
             Global.delay(bySeconds: 5.0) {
                 self.once = true
             }
@@ -301,16 +323,17 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         }
         
     }
-//    @objc private func menuFunc(_ button: UIButton) {
-//        
-//    }
+    //    @objc private func menuFunc(_ button: UIButton) {
+    //
+    //    }
     @objc private func gameCenterFunc(_ button: UIButton) {
-       GCHelper.sharedInstance.showGameCenter(self, viewState: .leaderboards)
+        scene.touchOnce = true
+        GCHelper.sharedInstance.showGameCenter(self, viewState: .leaderboards)
     }
     @objc private func extraLifeFunc(_ button: UIButton) {
         if Global.isPremium {
             UIView.animate(withDuration: 0.7) {
-            self.myGameOverView.alpha = 0.0
+                self.myGameOverView.alpha = 0.0
             }
         } else {
             advertisementForExtraLife()
@@ -330,6 +353,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         switch whichAd {
         case 0,1,2:
             view.addSubview(myQuadAdView)
+            myQuadAdView.myOnceDelegate = self
             UIView.animate(withDuration: 0.4) {
                 self.myQuadAdView.frame.origin.x = 0
             }
@@ -345,6 +369,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
         case 3:
             view.addSubview(myNumberBlazerAdView)
+            myNumberBlazerAdView.myOnceDelegate = self
             UIView.animate(withDuration: 0.4) {
                 self.myNumberBlazerAdView.frame.origin.x = 0
             }
@@ -360,6 +385,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
         case 4:
             view.addSubview(myFoobleAdView)
+            myFoobleAdView.myOnceDelegate = self
             UIView.animate(withDuration: 0.4) {
                 self.myFoobleAdView.frame.origin.x = 0
             }
@@ -376,6 +402,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             
             var count = 0
             for char in myFoobleAdView.myCharacters {
+                
                 let myLabel = UILabel()
                 myLabel.frame = CGRect(origin: myFoobleAdView.locations[count], size: CGSize(width: 16*sw, height: 16*sw))
                 myLabel.backgroundColor = UIColor(colorLiteralRed: 112/255, green: 194/255, blue: 206/255, alpha: 1.0)
@@ -393,6 +420,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             
         case 5:
             view.addSubview(myRansomAdView)
+            myRansomAdView.myOnceDelegate = self
             UIView.animate(withDuration: 0.4) {
                 self.myRansomAdView.frame.origin.x = 0
             }
@@ -414,6 +442,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
         case 6:
             view.addSubview(myFiretailAdView)
+            myFiretailAdView.myOnceDelegate = self
             UIView.animate(withDuration: 0.4) {
                 self.myFiretailAdView.frame.origin.x = 0
             }
@@ -477,6 +506,9 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         self.present(alertController, animated: true, completion: nil)
     }
     
+    func onceTouch() {
+        scene.touchOnce = true
+    }
     
     var activityView = UIActivityIndicatorView()
     private func purchase(productId: String = "plinkerPool.iap.premium") {
@@ -501,6 +533,11 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         }
         
         
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
     }
 }
 
