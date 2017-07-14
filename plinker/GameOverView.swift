@@ -8,19 +8,35 @@
 
 import UIKit
 
-class GameOverView: UIView, BrothersUIAutoLayout {
+class GameOverView: UIView, BrothersUIAutoLayout, DotTap {
     
+    var myColorScheme:ColorScheme?
+    
+    func tap(colorScheme: ColorScheme) {
+        UserDefaults.standard.set(colorScheme.rawValue, forKey: "colorScheme")
+        CustomColor.changeCustomColor(colorScheme: colorScheme)
+        myColorScheme = colorScheme
+        self.bestScoreLabel.textColor = CustomColor.color2
+        self.thisScoreLabel.textColor = CustomColor.color2
+        self.gameCenter.backgroundColor = CustomColor.color2
+        self.extraLife.layer.borderColor = CustomColor.color2.cgColor
+        self.extraLife.setTitleColor(CustomColor.color2, for: .normal)
+        self.noAds.backgroundColor = CustomColor.color2
+        self.replay.backgroundColor = CustomColor.color2
+        
+    }
+
     var (replay,menu,gameCenter,noAds,extraLife) = (ReplayButton(), MenuButton(), GameCenterButton(), SubscribeToPremiumButton(), OneMoreLife())
     var (bestScoreLabel, thisScoreLabel) = (UILabel(),UILabel())
 
     init() {super.init(frame: .zero)}
     
-    init(backgroundColor: UIColor, buttonsColor: UIColor, bestScore: Int, thisScore: Int) {
+    init(backgroundColor: UIColor, buttonsColor: UIColor, bestScore: Int, thisScore: Int, colorScheme: ColorScheme) {
         super.init(frame: .zero)
         self.frame = CGRect(x: 0, y: 0, width: 375*sw, height: 667*sh)
         self.frame.origin.x = 375*sw
         self.backgroundColor = backgroundColor
-        
+        myColorScheme = colorScheme
         replay = ReplayButton(color: buttonsColor, origin: CGPoint(x: 42*sw, y: 158*sh))
      //   menu = MenuButton(color: buttonsColor, origin: CGPoint(x: 42*sw, y: 211*sh))
         gameCenter = GameCenterButton(color: buttonsColor, origin: CGPoint(x: 42*sw, y: 211*sh))
@@ -36,14 +52,16 @@ class GameOverView: UIView, BrothersUIAutoLayout {
         
         bestScoreLabel.frame = CGRect(x: 43*sw, y: 106*sh, width: 200*sw, height: 31*sh)
         bestScoreLabel.text = "BEST \(Global.topScore)"
-        bestScoreLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 26*fontSizeMultiplier)
+        bestScoreLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 24*fontSizeMultiplier)
         bestScoreLabel.textColor = buttonsColor // or .white with black background
+        bestScoreLabel.addTextSpacing(spacing: 1.85*fontSizeMultiplier)
         self.addSubview(bestScoreLabel)
         
         thisScoreLabel.frame = CGRect(x: 43*sw, y: 29*sh, width: 200*sw, height: 84*sh)
         thisScoreLabel.text = "\(Global.points)"
-        thisScoreLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 72*fontSizeMultiplier)
+        thisScoreLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 68*fontSizeMultiplier)
         thisScoreLabel.textColor = buttonsColor // or .white with black background
+        thisScoreLabel.addTextSpacing(spacing: 5.23*fontSizeMultiplier)
         self.addSubview(thisScoreLabel)
   
 
@@ -68,15 +86,15 @@ class GameOverView: UIView, BrothersUIAutoLayout {
             }
         }
         
-        let skin1Label = UILabel(frame: CGRect(x: 42*sw, y: 468*sh, width: 350*sw, height: 24*sh))
-        let skin2Label = UILabel(frame: CGRect(x: 42*sw, y: 555*sh, width: 350*sw, height: 24*sh))
-        skin1Label.textColor = CustomColor.color4
-        skin2Label.textColor = CustomColor.color4
+        let skin1Label = UILabel(frame: CGRect(x: 42*sw, y: 418*sh, width: 350*sw, height: 24*sh))
+        let skin2Label = UILabel(frame: CGRect(x: 42*sw, y: 505*sh, width: 350*sw, height: 24*sh))
+        skin1Label.textColor = CustomColor.color1
+        skin2Label.textColor = CustomColor.color1
         skin1Label.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
         skin2Label.font = UIFont(name: "HelveticaNeue-Medium", size: 12*fontSizeMultiplier)
         skin1Label.text = "Congrats! Bonus Game Skin"
-        let skinImage1 = UIImageView(frame: CGRect(x: 42*sw, y: 495*sh, width: 50*sw, height: 50*sw))
-        let skinImage2 = UIImageView(frame: CGRect(x: 42*sw, y: 578*sh, width: 50*sw, height: 50*sw))
+        let skinImage1 = UIImageView(frame: CGRect(x: 42*sw, y: 445*sh, width: 50*sw, height: 50*sw))
+        let skinImage2 = UIImageView(frame: CGRect(x: 42*sw, y: 528*sh, width: 50*sw, height: 50*sw))
         
         
         switch Global.skin {
@@ -114,6 +132,36 @@ class GameOverView: UIView, BrothersUIAutoLayout {
             }
         default: break
         }
+        
+        
+        //add dots at bottom
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 606*sh, width: 375*sw, height: 45*sw))
+        scrollView.contentSize = CGSize(width: 11*45*sw, height: scrollView.bounds.height)
+        scrollView.backgroundColor = .clear
+        scrollView.showsHorizontalScrollIndicator = false
+        let schemeArray: [ColorScheme] = [
+        .lightBlue,
+        .darkBlue,
+        .teal,
+        .darkPurple,
+        .lightPurple,
+        .pink,
+        .red,
+        .orange,
+        .yellow,
+        .lime,
+        .green
+        ]
+        var count = 0
+        for scheme in schemeArray {
+            let myDot = Dot(color: CustomColor.colorDictionary[scheme]!.1, origin: CGPoint(x:45*CGFloat(count)*sw,y:0), colorScheme: scheme)
+            scrollView.addSubview(myDot)
+            myDot.tapDelegate = self
+            count += 1
+        }
+        self.addSubview(scrollView)
+        scrollView.contentOffset.x = sw*22.5
+       
     }
     
     required init?(coder aDecoder: NSCoder) {

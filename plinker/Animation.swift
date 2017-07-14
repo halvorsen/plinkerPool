@@ -29,10 +29,10 @@ class Animation: UIView, BrothersUIAutoLayout {
             CGPoint(x: 0, y: 144*sh)
         ]
         if colors == nil {
-            let color1: UIColor = UIColor(colorLiteralRed: 252/255, green: 52/255, blue: 104/255, alpha: 1.0)
-            let color2: UIColor = UIColor(colorLiteralRed: 255/255, green: 194/255, blue: 205/255, alpha: 1.0)
-            let color3: UIColor = UIColor(colorLiteralRed: 255/255, green: 147/255, blue: 172/255, alpha: 1.0)
-            let color4: UIColor = UIColor(colorLiteralRed: 255/255, green: 8/255, blue: 74/255, alpha: 1.0)
+            let color1: UIColor = CustomColor.color1
+            let color2: UIColor = CustomColor.color2
+            let color3: UIColor = CustomColor.color3
+            let color4: UIColor = CustomColor.color4
             _colors = [color1,color2,color3,color4,color1,color2]
             locations.removeAll()
             locations.append(CGPoint(x: 118*sw, y: -50*sh))

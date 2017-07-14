@@ -21,6 +21,7 @@
 		064193841F108D5D00B7B3FE /* FiretailAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064193831F108D5D00B7B3FE /* FiretailAdView.swift */; };
 		064193861F110BF500B7B3FE /* ping.wav in Resources */ = {isa = PBXBuildFile; fileRef = 064193851F110BF500B7B3FE /* ping.wav */; };
 		064193881F110BFB00B7B3FE /* bounce.wav in Resources */ = {isa = PBXBuildFile; fileRef = 064193871F110BFB00B7B3FE /* bounce.wav */; };
+		064F14201F1936E400C970A7 /* Dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064F141F1F1936E400C970A7 /* Dot.swift */; };
 		0692118A1EFF499B000953BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069211891EFF499B000953BA /* AppDelegate.swift */; };
 		0692118C1EFF499B000953BA /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118B1EFF499B000953BA /* GameScene.sks */; };
 		0692118E1EFF499B000953BA /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0692118D1EFF499B000953BA /* Actions.sks */; };
@@ -51,6 +52,7 @@
 		064193831F108D5D00B7B3FE /* FiretailAdView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiretailAdView.swift; sourceTree = "<group>"; };
 		064193851F110BF500B7B3FE /* ping.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ping.wav; sourceTree = "<group>"; };
 		064193871F110BFB00B7B3FE /* bounce.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bounce.wav; sourceTree = "<group>"; };
+		064F141F1F1936E400C970A7 /* Dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
 		069211861EFF499B000953BA /* plinker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = plinker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		069211891EFF499B000953BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0692118B1EFF499B000953BA /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				064193831F108D5D00B7B3FE /* FiretailAdView.swift */,
 				069211A51F01727C000953BA /* UIProtocolExtentions.swift */,
 				069211A31F016191000953BA /* GameOverView.swift */,
+				064F141F1F1936E400C970A7 /* Dot.swift */,
 				064193721F0ADF7800B7B3FE /* Plinker Targets */,
 				064193731F0ADF9200B7B3FE /* sks files */,
 				0692118F1EFF499B000953BA /* GameScene.swift */,
@@ -328,6 +331,7 @@
 				069211A21F015D00000953BA /* MenuButtons.swift in Sources */,
 				064193841F108D5D00B7B3FE /* FiretailAdView.swift in Sources */,
 				064193791F0D6D3A00B7B3FE /* Global.swift in Sources */,
+				064F14201F1936E400C970A7 /* Dot.swift in Sources */,
 				069211A61F01727C000953BA /* UIProtocolExtentions.swift in Sources */,
 				064193631F06BA8C00B7B3FE /* Animation.swift in Sources */,
 				064193821F108D1100B7B3FE /* FoobleAdView.swift in Sources */,

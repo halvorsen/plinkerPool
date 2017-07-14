@@ -55,3 +55,20 @@ extension BrothersUIAutoLayout {
     }
 }
 
+extension UILabel {
+    func addTextSpacing(spacing: CGFloat) {
+        if let textString = text {
+            let attributedString = NSMutableAttributedString(string: textString)
+            attributedString.addAttribute(NSKernAttributeName, value: spacing, range: NSRange(location: 0, length: attributedString.length - 1))
+            attributedText = attributedString
+        }
+    }
+}
+extension UIButton{
+    func addTextSpacing(spacing: CGFloat){
+        let attributedString = NSMutableAttributedString(string: (self.titleLabel?.text!)!)
+        attributedString.addAttribute(NSKernAttributeName, value: spacing, range: NSRange(location: 0, length: (self.titleLabel?.text!.characters.count)!))
+        self.setAttributedTitle(attributedString, for: .normal)
+    }
+}
+

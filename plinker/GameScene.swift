@@ -95,7 +95,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             CGPoint(x: 375*sw/2,y: 93*sh),
             CGPoint(x: 375*sw/2,y: 77*sh),
             CGPoint(x: 3*375*sw/4,y: 561*sh),
-            CGPoint(x: 96*sw,y: 150*sh),
+            //CGPoint(x: 96*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 150*sh),
             CGPoint(x: 266*sw,y: 322*sh),
             CGPoint(x: 266*sw,y: 500*sh),
@@ -105,7 +105,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
             .up,
             .down,
             .down,
-            .left,
+           // .left,
             .right,
             .right,
             .right

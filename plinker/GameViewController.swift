@@ -24,9 +24,13 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     let stopCueLabel = UILabel()
     var timer = Timer()
     var tap = UITapGestureRecognizer()
+    var myScheme: ColorScheme?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        myScheme = ColorScheme(rawValue: UserDefaults.standard.integer(forKey: "colorScheme"))
+        CustomColor.changeCustomColor(colorScheme: myScheme!)
         
         view.backgroundColor = CustomColor.boundaryColor
         view3.frame = self.view.bounds
@@ -81,6 +85,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         view.addGestureRecognizer(tap)
         
     }
+    
     
     @objc private func tapFunc(_ gesture: UITapGestureRecognizer) {
         scene.tapTouch()
@@ -146,6 +151,9 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     
     override func viewWillAppear(_ animated: Bool) {
         scoreInt = Global.points
+        
+        //set the color scheme
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -292,7 +300,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
                 GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore123654", score: Global.points)
             }
             
-            myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color3, bestScore: Global.topScore, thisScore: Global.points)
+            myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color1, bestScore: Global.topScore, thisScore: Global.points, colorScheme: myScheme!)
             myGameOverView.replay.addTarget(self, action: #selector(GameViewController.replayFunc(_:)), for: .touchUpInside)
             //        myGameOverView.menu.addTarget(self, action: #selector(GameViewController.menuFunc(_:)), for: .touchUpInside)
             myGameOverView.gameCenter.addTarget(self, action: #selector(GameViewController.gameCenterFunc(_:)), for: .touchUpInside)
@@ -531,8 +539,6 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
                 self.activityView.removeFromSuperview()
             }
         }
-        
-        
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -540,4 +546,6 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         return true
     }
 }
+
+
 

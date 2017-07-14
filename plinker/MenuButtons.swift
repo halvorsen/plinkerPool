@@ -14,12 +14,13 @@ class SubscribeToPremiumButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.setTitle("NO ADS", for: .normal)
+        self.setTitle("REMOVE ADS", for: .normal)
         
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 19*fontSizeMultiplier)
         self.backgroundColor = color
-        self.frame.size = CGSize(width: 96*sw, height: 42*sh)
+        self.frame.size = CGSize(width: 176*sw, height: 42*sh)
         self.frame.origin = origin
+        self.addTextSpacing(spacing: 1.46*fontSizeMultiplier)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,7 +35,7 @@ class PlayButton: UIButton, BrothersUIAutoLayout {
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
         self.setTitle("PLAY", for: .normal)
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 19*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 72*sw, height: 42*sh)
         self.frame.origin = origin
@@ -51,11 +52,12 @@ class ReplayButton: UIButton, BrothersUIAutoLayout {
     init() {super.init(frame: .zero)}
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
-        self.setTitle("REPLAY", for: .normal)
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.setTitle("PLAY PLINKER", for: .normal)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 19*fontSizeMultiplier)
         self.backgroundColor = color
-        self.frame.size = CGSize(width: 96*sw, height: 42*sh)
+        self.frame.size = CGSize(width: 194*sw, height: 42*sh)
         self.frame.origin = origin
+        self.addTextSpacing(spacing: 1.46*fontSizeMultiplier)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,10 +72,11 @@ class GameCenterButton: UIButton, BrothersUIAutoLayout {
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
         self.setTitle("GAME CENTER", for: .normal)
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 19*fontSizeMultiplier)
         self.backgroundColor = color
-        self.frame.size = CGSize(width: 154*sw, height: 42*sh)
+        self.frame.size = CGSize(width: 194*sw, height: 42*sh)
         self.frame.origin = origin
+        self.addTextSpacing(spacing: 1.46*fontSizeMultiplier)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -88,7 +91,7 @@ class MenuButton: UIButton, BrothersUIAutoLayout {
     init(color: UIColor, origin: CGPoint) {
         super.init(frame: .zero)
         self.setTitle("MENU", for: .normal)
-        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 18*fontSizeMultiplier)
+        self.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 19*fontSizeMultiplier)
         self.backgroundColor = color
         self.frame.size = CGSize(width: 77*sw, height: 42*sh)
         self.frame.origin = origin
