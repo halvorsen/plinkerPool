@@ -87,6 +87,7 @@ class Animation: UIView, BrothersUIAutoLayout {
             myLabel.layer.cornerRadius = ballRadius*sw
             myLabel.layer.masksToBounds = true
             myLabel.backgroundColor = _colors?[i]
+            
             self.addSubview(myLabel)
             balls.append(myLabel)
             i += 1

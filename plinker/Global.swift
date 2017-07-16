@@ -11,7 +11,7 @@ import Foundation
 public struct Global {
     public static var skin: String = "none"
     public static var points: Int = 0
-    public static var isOddController = true
+    public static var presentController = 1
     public static var targetsLeft = 9
     public static var gaveBonusStrikes = false
     public static var isPremium = false

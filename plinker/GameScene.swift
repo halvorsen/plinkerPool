@@ -519,7 +519,11 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
         
         
     }
-    
+//    func resetGame() {
+//        let count = 0
+//        for ball in balls
+//        
+//    }
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -59,7 +59,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         skin.alpha = 0.5
         switch Global.skin {
         case "whale": skin.image = #imageLiteral(resourceName: "whale")
-        case "unicown": skin.image = #imageLiteral(resourceName: "unicown")
+        case "unicow": skin.image = #imageLiteral(resourceName: "unicown")
         case "squid": skin.image = #imageLiteral(resourceName: "squid")
         default: break
         }
@@ -78,6 +78,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         }
         cover.frame = view.bounds
         cover.backgroundColor = .white
+       
         view.addSubview(cover)
         
         tap = UITapGestureRecognizer(target: self, action: #selector(GameViewController.tapFunc(_:)))
@@ -85,7 +86,139 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         view.addGestureRecognizer(tap)
         
     }
-    
+    private func nextLevel() {
+        cover.alpha = 1.0
+      
+        Global.targetsLeft = 9
+        Global.gaveBonusStrikes = false
+        
+        myScheme = ColorScheme(rawValue: UserDefaults.standard.integer(forKey: "colorScheme"))
+        CustomColor.changeCustomColor(colorScheme: myScheme!)
+        
+//        view3.frame = self.view.bounds
+//        view.addSubview(view3)
+//        scene.resetGame()  // MIGHT NEED TO RESET INSTEAD OF MAKING A NEW INSTANCE
+        scene = GameScene(size: CGSize(width: view.bounds.width, height: view.bounds.height))
+        scene.scaleMode = .aspectFill
+        scene.delegateRefresh = self
+        
+        view3.presentScene(scene)
+        view3.ignoresSiblingOrder = true
+        
+        if !cueTrajectory.isDescendant(of: view) {
+            view.addSubview(cueTrajectory)
+        }
+        
+//        score.frame = CGRect(x: 0, y: 20*sh, width: 375*sw, height: 86*sh)
+//        score.font = UIFont(name: "HelveticaNeue-Bold", size: 72*fontSizeMultiplier)
+        score.textColor = CustomColor.color3
+//        score.alpha = 0.1
+//        score.textAlignment = .center
+        score.text = String(Global.points)
+//        view3.addSubview(score)
+        
+        let skin = UIImageView(frame: CGRect(x: 10*sw, y: 144*sh, width: 355*sw, height: 355*sw))
+        skin.alpha = 0.5
+        switch Global.skin {
+        case "whale": skin.image = #imageLiteral(resourceName: "whale")
+        case "unicown": skin.image = #imageLiteral(resourceName: "unicown")
+        case "squid": skin.image = #imageLiteral(resourceName: "squid")
+        default: break
+        }
+//
+//        view3.addSubview(skin)
+        
+//        stopCueLabel.frame = CGRect(x: 0,y: 617*sh,width: 375*sw,height: 50*sh)
+//        stopCueLabel.textColor = CustomColor.boundaryColor
+//        stopCueLabel.textAlignment = .center
+//        stopCueLabel.alpha = 0.1
+//        stopCueLabel.text = "touch screen to aim"
+//        stopCue.frame = self.view.bounds
+//        stopCue.addTarget(self, action: #selector(GameViewController.stopCueFunc), for: .touchUpInside)
+//        if Global.level == 1 {
+//            view3.addSubview(stopCueLabel)
+//        }
+//        cover.frame = view.bounds
+//        cover.backgroundColor = .white
+          view.addSubview(cover)
+        
+//        tap = UITapGestureRecognizer(target: self, action: #selector(GameViewController.tapFunc(_:)))
+//        tap.delegate = self
+//        view.addGestureRecognizer(tap)
+        
+        
+        let myAnimation = Animation()
+        view.addSubview(myAnimation)
+        
+        let countDownLabel = UILabel()
+        countDownLabel.frame = CGRect(x: 0, y: 283.5*sh, width: 375*sw, height: 100*sh)
+        countDownLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 25*fontSizeMultiplier)
+        countDownLabel.textAlignment = .center
+        countDownLabel.textColor = UIColor(colorLiteralRed: 7/255, green: 7/255, blue: 7/255, alpha: 0.6)
+        countDownLabel.alpha = 0.0
+        countDownLabel.text = ""
+        view.addSubview(countDownLabel)
+        
+        Global.delay(bySeconds: 1.2) {
+            countDownLabel.text = ""
+            
+            Global.delay(bySeconds: 1.5) {
+                countDownLabel.text = Global.introTitle
+                UIView.animate(withDuration: 0.5) {
+                    countDownLabel.alpha = 1.0
+                }
+                Global.delay(bySeconds: 0.7) {
+                    UIView.animate(withDuration: 0.5) {
+                        countDownLabel.alpha = 0.0
+                        
+                    }
+                    Global.delay(bySeconds: 0.8) {
+                        countDownLabel.removeFromSuperview()
+                        
+                    }
+                }
+            }
+            
+        }
+        
+        Global.delay(bySeconds: 1.0) {
+            UIView.animate(withDuration: 2.0) {
+                myAnimation.transform = myAnimation.transform.rotated(by: .pi)
+                
+            }
+            // self.delay(bySeconds: 0.1) {
+            UIView.animate(withDuration: 2.0) {
+                myAnimation.transform = myAnimation.transform.rotated(by: .pi)
+            }
+            // }
+        }
+        Global.delay(bySeconds: 3.5) {
+            
+            for ball in self.scene.balls {
+               
+                ball.alpha = 1.0
+                
+                
+            }
+            for boundary in self.scene.boundaries {
+               
+                boundary.alpha = 1.0
+                
+            }
+          
+            self.scene.cue.alpha = 1.0
+            
+            UIView.animate(withDuration: 1.2) {
+                self.cover.alpha = 0.0
+            }
+            Global.delay(bySeconds: 3.0) {
+                self.cover.removeFromSuperview()
+                //                self.timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(GameViewController.callForFlash), userInfo: nil, repeats: true)
+            }
+        }
+
+        
+    }
     
     @objc private func tapFunc(_ gesture: UITapGestureRecognizer) {
         scene.tapTouch()
@@ -208,13 +341,15 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         Global.delay(bySeconds: 3.5) {
             
             for ball in self.scene.balls {
-                
+               
                 ball.alpha = 1.0
+                
                 
             }
             for boundary in self.scene.boundaries {
-                
+            
                 boundary.alpha = 1.0
+                
                 
             }
             
@@ -267,22 +402,50 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         Global.targetsLeft -= 1
         if Global.targetsLeft == 0 {
             Global.level += 1
+            
+          
             Global.introTitle = "Level \(Global.level)"
-            if Global.isOddController {
-                Global.delay(bySeconds: 1.0) {
-                    
-                    self.performSegue(withIdentifier: "fromOddToEven", sender: self)
-                }
-            } else {
-                
-                Global.delay(bySeconds: 1.0) {
-                    self.performSegue(withIdentifier: "fromEvenToOdd", sender: self)
-                }
+            Global.delay(bySeconds: 1.0) {
+            self.nextLevel()
             }
+//
+//            switch Global.presentController {
+//            case 1:
+//              //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromOneToTwo", sender: self)
+//              //  }
+//            case 2:
+//              //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromTwoToThree", sender: self)
+//              //  }
+//            case 3:
+//              //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromThreeToFour", sender: self)
+//              //  }
+//            case 4:
+//                //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromFourToOne", sender: self)
+//            //  }
+//            default:
+//                break
+//            }
+//            
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        Global.isOddController = !Global.isOddController
+//        switch Global.presentController {
+//        case 1:
+//            Global.presentController = 2
+//        case 2:
+//            Global.presentController = 3
+//        case 3:
+//            Global.presentController = 4
+//        case 4:
+//            Global.presentController = 1
+//        default:
+//            break
+//        }
+
         Global.targetsLeft = 9
     }
     
@@ -314,21 +477,35 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         }
     }
     @objc private func replayFunc(_ button: UIButton) {
-        
-        Global.points = 0
+        myGameOverView.removeFromSuperview()
+        scoreInt = 0
         Global.gaveBonusStrikes = false
         Global.introTitle = "Plinker Pool!"
         Global.level = 1
+        nextLevel()
         
-        if Global.isOddController {
-            
-            performSegue(withIdentifier: "fromOddToEven", sender: self)
-            
-        } else {
-            
-            performSegue(withIdentifier: "fromEvenToOdd", sender: self)
-            
-        }
+        
+        
+//        switch Global.presentController {
+//        case 1:
+//          //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromOneToTwo", sender: self)
+//         //   }
+//        case 2:
+//          //  Global.delay(bySeconds: 1.0) {
+//                self.performSegue(withIdentifier: "fromTwoToThree", sender: self)
+//          //  }
+//        case 3:
+//            //  Global.delay(bySeconds: 1.0) {
+//            self.performSegue(withIdentifier: "fromThreeToFour", sender: self)
+//        //  }
+//        case 4:
+//            //  Global.delay(bySeconds: 1.0) {
+//            self.performSegue(withIdentifier: "fromFourToOne", sender: self)
+//        //  }
+//        default:
+//            break
+//        }
         
     }
     //    @objc private func menuFunc(_ button: UIButton) {
