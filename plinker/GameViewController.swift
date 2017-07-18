@@ -90,8 +90,6 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         cover.alpha = 1.0
       
         Global.targetsLeft = 9
-        Global.gaveBonusStrikes = false
-        
         myScheme = ColorScheme(rawValue: UserDefaults.standard.integer(forKey: "colorScheme"))
         CustomColor.changeCustomColor(colorScheme: myScheme!)
         
@@ -463,7 +461,7 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
                 GCHelper.sharedInstance.reportLeaderboardIdentifier("highscore123654", score: Global.points)
             }
             
-            myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color1, bestScore: Global.topScore, thisScore: Global.points, colorScheme: myScheme!)
+            myGameOverView = GameOverView(backgroundColor: .white, buttonsColor: CustomColor.color1, bestScore: Global.topScore, thisScore: Global.points, colorScheme: myScheme!, vc: self)
             myGameOverView.replay.addTarget(self, action: #selector(GameViewController.replayFunc(_:)), for: .touchUpInside)
             //        myGameOverView.menu.addTarget(self, action: #selector(GameViewController.menuFunc(_:)), for: .touchUpInside)
             myGameOverView.gameCenter.addTarget(self, action: #selector(GameViewController.gameCenterFunc(_:)), for: .touchUpInside)
@@ -474,6 +472,9 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             Global.delay(bySeconds: 5.0) {
                 self.once = true
             }
+            
+            
+            
         }
     }
     @objc private func replayFunc(_ button: UIButton) {
@@ -517,8 +518,15 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
     }
     @objc private func extraLifeFunc(_ button: UIButton) {
         if Global.isPremium {
+            scene.on = true
+            scene.touchOnce = true
             UIView.animate(withDuration: 0.7) {
-                self.myGameOverView.alpha = 0.0
+               // self.myGameOverView.alpha = 0.0
+                self.myGameOverView.frame.origin.x = 375*self.sw
+            }
+            Global.delay(bySeconds: 0.8) {
+                
+                self.myGameOverView.removeFromSuperview()
             }
         } else {
             advertisementForExtraLife()
@@ -691,6 +699,8 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
         self.present(alertController, animated: true, completion: nil)
     }
     
+    
+    
     func onceTouch() {
         scene.touchOnce = true
     }
@@ -717,6 +727,8 @@ class GameViewController: UIViewController, refreshDelegate, BrothersUIAutoLayou
             }
         }
     }
+    
+    
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         

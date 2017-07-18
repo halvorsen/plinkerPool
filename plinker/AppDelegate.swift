@@ -53,11 +53,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Global.topScore = UserDefaults.standard.integer(forKey: "topScore")
         
-        
-        print("highscore: \(Global.topScore)")
-        
         if UserDefaults.standard.bool(forKey: "isPremiumMember") {
             Global.isPremium = true
+        }
+        if UserDefaults.standard.bool(forKey: "isColorThemes") {
+            Global.isColorThemes = true
         }
         
     }

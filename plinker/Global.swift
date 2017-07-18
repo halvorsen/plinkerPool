@@ -15,6 +15,7 @@ public struct Global {
     public static var targetsLeft = 9
     public static var gaveBonusStrikes = false
     public static var isPremium = false
+    public static var isColorThemes = false
     public static var topScore = 0
     public static var introTitle = "Plinker Pool!"
     public static var level = 1

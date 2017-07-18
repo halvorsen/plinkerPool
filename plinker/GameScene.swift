@@ -290,7 +290,7 @@ class GameScene: SKScene, BrothersUIAutoLayout, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         
         if on {
-            
+            print("didbegin")
             if (contact.bodyA.categoryBitMask == 2 || contact.bodyA.categoryBitMask == 8) && contact.bodyB.categoryBitMask == 1 {
                 
                 if let target = contact.bodyA.node as? SKShapeNode {

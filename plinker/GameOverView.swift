@@ -7,12 +7,81 @@
 //
 
 import UIKit
+import SwiftyStoreKit
 
 class GameOverView: UIView, BrothersUIAutoLayout, DotTap {
+    var activityView = UIActivityIndicatorView()
+    
+    private func colorThemesFunc() {
+        // Create the alert controller
+        let alertController = UIAlertController(title: "Color Themes", message: "Unlock all color themes $2.99", preferredStyle: .alert)
+        
+        // Create the actions
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.purchaseColorThemes()
+            
+        }
+        let restoreAction = UIAlertAction(title: "Restore Purchase", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            
+            SwiftyStoreKit.restorePurchases(atomically: true) { results in
+                if results.restoreFailedPurchases.count > 0 {
+                    print("Restore Failed: \(results.restoreFailedPurchases)")
+                }
+                else if results.restoredPurchases.count > 0 {
+                    Global.isColorThemes = true
+                    UserDefaults.standard.set(true, forKey: "isColorThemes")
+                }
+                else {
+                    print("Nothing to Restore")
+                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+            UIAlertAction in
+            print("Cancel Pressed")
+        }
+        
+        // Add the actions
+        alertController.addAction(okAction)
+        alertController.addAction(restoreAction)
+        alertController.addAction(cancelAction)
+        
+        // Present the controller
+        viewC.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func purchaseColorThemes(productId: String = "plinkerPool.iap.colorThemes") {
+       
+        activityView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityView.center = self.center
+        activityView.startAnimating()
+        activityView.alpha = 0.0
+        self.addSubview(activityView)
+        SwiftyStoreKit.purchaseProduct(productId) { result in
+            switch result {
+            case .success( _):
+                Global.isColorThemes = true
+                UserDefaults.standard.set(true, forKey: "isColorThemes")
+                self.activityView.removeFromSuperview()
+            case .error(let error):
+                
+                print("error: \(error)")
+                print("Purchase Failed: \(error)")
+                self.activityView.removeFromSuperview()
+            }
+        }
+    }
+    
+    
+    
     
     var myColorScheme:ColorScheme?
     
     func tap(colorScheme: ColorScheme) {
+        if Global.isColorThemes == true || colorScheme.rawValue == 0  || colorScheme.rawValue == 1 || colorScheme.rawValue == 5 {
         UserDefaults.standard.set(colorScheme.rawValue, forKey: "colorScheme")
         CustomColor.changeCustomColor(colorScheme: colorScheme)
         myColorScheme = colorScheme
@@ -23,16 +92,20 @@ class GameOverView: UIView, BrothersUIAutoLayout, DotTap {
         self.extraLife.setTitleColor(CustomColor.color2, for: .normal)
         self.noAds.backgroundColor = CustomColor.color2
         self.replay.backgroundColor = CustomColor.color2
+        } else {
+            colorThemesFunc()
+        }
         
     }
 
     var (replay,menu,gameCenter,noAds,extraLife) = (ReplayButton(), MenuButton(), GameCenterButton(), SubscribeToPremiumButton(), OneMoreLife())
     var (bestScoreLabel, thisScoreLabel) = (UILabel(),UILabel())
-
+    var viewC = UIViewController()
     init() {super.init(frame: .zero)}
     
-    init(backgroundColor: UIColor, buttonsColor: UIColor, bestScore: Int, thisScore: Int, colorScheme: ColorScheme) {
+    init(backgroundColor: UIColor, buttonsColor: UIColor, bestScore: Int, thisScore: Int, colorScheme: ColorScheme, vc: UIViewController) {
         super.init(frame: .zero)
+        viewC = vc
         self.frame = CGRect(x: 0, y: 0, width: 375*sw, height: 667*sh)
         self.frame.origin.x = 375*sw
         self.backgroundColor = backgroundColor
@@ -45,7 +118,11 @@ class GameOverView: UIView, BrothersUIAutoLayout, DotTap {
         self.addSubview(replay)
      //   self.addSubview(menu)
         self.addSubview(gameCenter)
+        if !Global.isPremium {
         self.addSubview(noAds)
+        } else {
+            extraLife.frame.origin.y = noAds.frame.origin.y
+        }
         if !Global.gaveBonusStrikes {
         self.addSubview(extraLife)
         }
